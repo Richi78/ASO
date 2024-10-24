@@ -1,7 +1,7 @@
 # ASO
 Proyecto de aplicación de sistemas operativos
 
-##Descargar Python
+## Descargar Python
 
 1. Descargar el instalador de la página oficial
 
