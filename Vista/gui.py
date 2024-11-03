@@ -1,5 +1,6 @@
 
 import tkinter as tk
+from Controlador.generalConfigs import installApache,installFTP,installPostGreSQL
 
 class Gui:
     def __init__(self, master) -> None:
@@ -11,9 +12,9 @@ class Gui:
 
         # Otros
         self.generalConfigs = [
-            {"service": "Apache", "action": "asdf"},
-            {"service": "FTP", "action": "asdf"}, 
-            {"service": "PostgreSQL", "action": "asdf"}
+            {"service": "Apache", "action": installApache},
+            {"service": "FTP", "action": installFTP}, 
+            {"service": "PostgreSQL", "action": installPostGreSQL}
             ]
 
         # Widgets
@@ -34,12 +35,16 @@ class Gui:
 
         # Botones
         for e in self.generalConfigs:
-            self.createButton(self.frame_generalConfigs, e["service"])
+            self.createButton(
+                self.frame_generalConfigs, 
+                e["service"], 
+                e["action"]
+                )
 
 
         # Eventos
         # self.master.bind('',)
 
-    def createButton(self, master, text):
-        self.button = tk.Button(master, text=text)
+    def createButton(self, master, text, action):
+        self.button = tk.Button(master, text=text, command=action)
         self.button.pack(side='left')
