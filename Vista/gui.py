@@ -33,13 +33,16 @@ class Gui:
             )
         self.label_generalConfigs.pack(side="left")
 
-        # Botones
+        # Botones de instalar servicios
         for e in self.generalConfigs:
             self.createButton(
                 self.frame_generalConfigs, 
                 e["service"], 
                 e["action"]
                 )
+        
+        # Frame nuevo usuario
+        
 
 
         # Eventos
