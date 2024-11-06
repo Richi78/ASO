@@ -11,6 +11,9 @@ def installApache():
                 )
             print("stdout: ", result.stdout)
             print("stderr: ", result.stderr)
+            subprocess.run(
+                ["service","apache2","start"]
+            )
         except subprocess.CalledProcessError as e:
             print("Error al instalar Apache2:", e)
     else:
@@ -27,7 +30,8 @@ def installFTP():
                 )
             print("stdout: ", result.stdout)
             print("stderr: ", result.stderr)
-
+            
+            # abrir puertos
             subprocess.run(
                 ['firewall-cmd', '--permanent', '--add-port=21/tcp']
             )
@@ -35,6 +39,10 @@ def installFTP():
                 ['firewall-cmd', '--reload']
             )
             print("Puerto 21 abierto")
+            # iniciar servicio
+            subprocess.run(
+                ['service', 'vsftpd','start']
+            )            
         except subprocess.CalledProcessError as e:
             print("Error al instalar FTP:", e)
     else:
@@ -51,6 +59,11 @@ def installPostGreSQL():
                 )
             print("stdout: ", result.stdout)
             print("stderr: ", result.stderr)
+            
+            #iniciar servicio
+            subprocess.run(
+                ["service","postgresql","start"]
+            )
         except subprocess.CalledProcessError as e:
             print("Error al instalar PostgreSQL:", e)
     else:
