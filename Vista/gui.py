@@ -16,6 +16,10 @@ class Gui:
             {"service": "FTP", "action": installFTP}, 
             {"service": "PostgreSQL", "action": installPostGreSQL}
             ]
+        
+        self.userButtons = [
+            {}
+        ]
 
         # Widgets
         
@@ -42,8 +46,13 @@ class Gui:
                 )
         
         # Frame nuevo usuario
-        
+        self.frame_user = tk.Frame(self.master, width=700, height=200)
+        self.frame_user.pack()
 
+        self.label_userLabel = tk.Label(self.frame_user, text="Crear nuevo usuario")
+        self.label_userLabel.pack(side="left")
+
+        
 
         # Eventos
         # self.master.bind('',)
