@@ -9,10 +9,10 @@ def whoami() -> str:
 
 def generatePassword() -> str:
     characters = string.ascii_letters + string.digits + string.punctuation
-    password = ''.join(random.choice(characters) for _ in range(32))
+    password = ''.join(random.choice(characters) for _ in range(16))
     return password
 
-def crearIndex(name):
+def createDirectoryWeb(name):
     today = date.today()
     dirname = str(today.day)+str(today.month)+str(today.year)+f"_{name}"
     subprocess.run(
@@ -31,5 +31,4 @@ def crearIndex(name):
         f.write(f"<h1>Este es el sitio de {name} </h1>")
         f.write("</body>")
         f.write("</html>")
-        
         
