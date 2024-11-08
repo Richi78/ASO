@@ -1,4 +1,5 @@
 import subprocess
+from tkinter import messagebox
 
 def installApache():
     isInstalled = validateService('apache2')
@@ -18,6 +19,7 @@ def installApache():
             print("Error al instalar Apache2:", e)
     else:
         print("El servicio apache2 ya esta instalado")
+        messagebox.showinfo(title="Mensaje", message="El servicio Apache ya esta instalado.")
 
 def installFTP():
     isInstalled = validateService('vsftpd')
@@ -46,6 +48,7 @@ def installFTP():
         except subprocess.CalledProcessError as e:
             print("Error al instalar FTP:", e)
     else:
+        messagebox.showinfo(title="Mensaje", message="El servicio FTP ya esta instalado.")
         print("El servicio FTP ya esta instalado")
 
 def installPostGreSQL():
@@ -68,6 +71,7 @@ def installPostGreSQL():
             print("Error al instalar PostgreSQL:", e)
     else:
         print("El servicio PostgreSQL ya esta instalado")
+        messagebox.showinfo(title="Mensaje", message="El servicio PostgreSQL ya esta instalado.")
     
 def validateService(service):
     """

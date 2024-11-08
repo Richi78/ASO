@@ -1,5 +1,6 @@
 
 import tkinter as tk
+from tkinter import messagebox
 from Controlador.generalConfigs import installApache,installFTP,installPostGreSQL
 from Utils.utils import generatePassword, createDirectoryWeb
 
@@ -120,5 +121,6 @@ class Gui:
         
     def createUser(self):
         createDirectoryWeb(self.userName.get())
+        
          
         
