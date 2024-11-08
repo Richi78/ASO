@@ -38,3 +38,15 @@ def createDirectoryWeb(name):
     with open(f"/srv/www/htdocs/{dirname}/phpinfo.php", 'w') as f:
         f.write("<?php phpinfo(); ?>")
         
+def verifyUser(name):
+    users = subprocess.run(
+        ['ls', '/srv/www/htdocs/'],
+        text=True,
+        capture_output=True
+    )
+    usersList = users.stdout.split()[:-1]
+    usersList = list(map(lambda x: x.split('_')[1], usersList))
+    if name in usersList: 
+        return {"status": 400, "message": "Este nombre de usuario ya existe"}
+    return {"status": 200, "message": "El nombre de usuario esta disponible"}
+        

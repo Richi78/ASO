@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from Controlador.generalConfigs import installApache,installFTP,installPostGreSQL
-from Utils.utils import generatePassword, createDirectoryWeb
+from Utils.utils import generatePassword, createDirectoryWeb, verifyUser
 
 class Gui:
     def __init__(self, master) -> None:
@@ -120,7 +120,15 @@ class Gui:
         self.passwd.set(generatePassword())
         
     def createUser(self):
-        createDirectoryWeb(self.userName.get())
+        name = self.userName.get()
+        status = verifyUser(name)
+        if status["status"] == 400:
+            messagebox.showerror(
+                title="Error",
+                message=status["message"]
+            )
+            return
+        createDirectoryWeb(name)
         messagebox.showinfo(
             title="Confirmacion",
             message="Usuario creado corrrectamente"
