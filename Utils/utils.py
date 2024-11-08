@@ -39,6 +39,7 @@ def createDirectoryWeb(name):
         f.write("<?php phpinfo(); ?>")
         
 def verifyUser(name):
+    if name == "" : return {"status": 400, "message": "El nombre de usuario es obligatorio."}
     users = subprocess.run(
         ['ls', '/srv/www/htdocs/'],
         text=True,
