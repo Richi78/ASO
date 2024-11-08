@@ -5,16 +5,27 @@ def installApache():
     isInstalled = validateService('apache2')
     if isInstalled:
         try:
-            result = subprocess.run(
-                ['zypper','in','-y','apache2'], 
+            subprocess.run(
+                ['zypper','in','-y','apache2', 'apache2-mod_php7'], 
                 text=True,
                 capture_output=True
                 )
-            print("stdout: ", result.stdout)
-            print("stderr: ", result.stderr)
+            subprocess.run(
+                ['zypper', 'in', '-y', 'php7', 'php7-mysql', 'php7-pgsql']
+            )
+            subprocess.run(
+                ['/usr/sbin/a2enmod', 'php7']
+            )
+            subprocess.run(
+                ['a2enmod', 'version']
+            )
             subprocess.run(
                 ["service","apache2","start"]
             )
+            messagebox.showinfo(
+                title="Confirmacion", 
+                message="El servicio Apache se ha instalado correctamente."
+                )
         except subprocess.CalledProcessError as e:
             print("Error al instalar Apache2:", e)
     else:
@@ -44,7 +55,11 @@ def installFTP():
             # iniciar servicio
             subprocess.run(
                 ['service', 'vsftpd','start']
-            )            
+            )          
+            messagebox.showinfo(
+                title="Confirmacion", 
+                message="El servicio FTP se ha instalado correctamente."
+                )  
         except subprocess.CalledProcessError as e:
             print("Error al instalar FTP:", e)
     else:
@@ -56,7 +71,7 @@ def installPostGreSQL():
     if isInstalled:
         try:
             result = subprocess.run(
-                ['zypper','in','-y','postgresql-server'],
+                ['zypper','in','-y', 'postgresql11','postgresql11-server'],
                 text=True,
                 capture_output=True
                 )
@@ -67,6 +82,10 @@ def installPostGreSQL():
             subprocess.run(
                 ["service","postgresql","start"]
             )
+            messagebox.showinfo(
+                title="Confirmacion", 
+                message="El servicio PostgreSQL se ha instalado correctamente."
+                )
         except subprocess.CalledProcessError as e:
             print("Error al instalar PostgreSQL:", e)
     else:

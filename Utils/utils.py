@@ -22,6 +22,9 @@ def createDirectoryWeb(name):
     subprocess.run(
         ['touch',f'/srv/www/htdocs/{dirname}/index.html']
     )
+    subprocess.run(
+        ['touch',f'/srv/www/htdocs/{dirname}/phpinfo.php']
+    )
     with open(f"/srv/www/htdocs/{dirname}/index.html", 'w') as f:
         f.write("<!DOCTYPE html>")
         f.write('<html lang="en">')
@@ -32,4 +35,6 @@ def createDirectoryWeb(name):
         f.write(f"<h1>Este es el sitio de {name} </h1>")
         f.write("</body>")
         f.write("</html>")
+    with open(f"/srv/www/htdocs/{dirname}/phpinfo.php", 'w') as f:
+        f.write("<?php phpinfo(); ?>")
         

@@ -14,7 +14,7 @@ class Gui:
 
         # Otros
         self.generalConfigs = [
-            {"service": "Apache", "action": installApache},
+            {"service": "Apache+PHP7", "action": installApache},
             {"service": "FTP", "action": installFTP}, 
             {"service": "PostgreSQL", "action": installPostGreSQL}
             ]
