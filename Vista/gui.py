@@ -121,6 +121,10 @@ class Gui:
         
     def createUser(self):
         createDirectoryWeb(self.userName.get())
+        messagebox.showinfo(
+            title="Confirmacion",
+            message="Usuario creado corrrectamente"
+            )
         
          
         

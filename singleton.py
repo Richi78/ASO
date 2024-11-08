@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 try:
     import tkinter as tk
+    from tkinter import messagebox
 except ImportError:
     raise ImportError("Se requiere el modulo tkinter")
 from Utils.utils import whoami
@@ -14,4 +15,9 @@ if __name__ == "__main__":
         my_gui = Gui(root)
         root.title('Proyecto ASO')
         root.mainloop()
-    else: print("Ejecutar la apliacion con privilegios de administrador")
+    else: 
+        messagebox.showerror(
+            title="Error",
+            message="Debes ejecutar la aplicacion con privilegios."
+            )
+        print("Ejecutar la apliacion con privilegios de administrador")
