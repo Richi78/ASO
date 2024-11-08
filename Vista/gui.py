@@ -7,10 +7,7 @@ from Utils.utils import generatePassword, createDirectoryWeb, verifyUser
 class Gui:
     def __init__(self, master) -> None:
         self.master = master
-        self.master.geometry('700x500')
-
-        # Color
-        # self.color= tk.StringVar()
+        self.master.geometry('600x300')
 
         # Otros
         self.generalConfigs = [
@@ -131,7 +128,7 @@ class Gui:
         createDirectoryWeb(name)
         messagebox.showinfo(
             title="Confirmacion",
-            message="Usuario creado corrrectamente"
+            message=f"Usuario creado corrrectamente \n Usuario: {self.userName.get()}\n Password: {self.passwd.get()}"
             )
         
          
