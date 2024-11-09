@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from Controlador.generalConfigs import installApache,installFTP,installPostGreSQL
-from Utils.utils import generatePassword, createDirectoryWeb, verifyUser
+from Utils.utils import generatePassword, createDirectoryWeb, verifyUser, createVirtualHost, restartApache, modifyHosts
 
 class Gui:
     def __init__(self, master) -> None:
@@ -21,6 +21,8 @@ class Gui:
         ]
 
         self.userName = tk.StringVar(value="")
+        self.userEmail = tk.StringVar(value="")
+        self.userDomain = tk.StringVar(value="")
         self.passwd = tk.StringVar(value="")
 
         # Widgets
@@ -56,7 +58,7 @@ class Gui:
         self.frame_user = tk.Frame(
             self.master, 
             width=700, 
-            height=200,
+            height=20,
             pady=5
             )
         self.frame_user.pack()
@@ -71,17 +73,71 @@ class Gui:
             self.frame_user,
             textvariable=self.userName
             )
-        self.input_user.pack(side='left')
+        self.input_user.pack(side="left")
+
+        # Frame email
+
+        self.frame_email = tk.Frame(
+            self.master, 
+            width=700, 
+            height=20,
+            pady=5
+            )
+        self.frame_email.pack()
+
+        self.label_emailLabel = tk.Label(
+            self.frame_email,
+            text="Correo electronico"
+            )
+        self.label_emailLabel.pack(side="left")
+
+        self.input_email = tk.Entry(
+            self.frame_email,
+            textvariable=self.userEmail
+            )
+        self.input_email.pack(side="left")
+
+        # Frame domain
+
+        self.frame_domain = tk.Frame(
+            self.master, 
+            width=700, 
+            height=20,
+            pady=5
+            )
+        self.frame_domain.pack()
+
+        self.label_domainLabel = tk.Label(
+            self.frame_domain,
+            text="Nombre de dominio"
+            )
+        self.label_domainLabel.pack(side="left")
+
+        self.input_domain = tk.Entry(
+            self.frame_domain,
+            textvariable=self.userDomain
+            )
+        self.input_domain.pack(side="left")
+
+        # Frame password
+
+        self.frame_passwd = tk.Frame(
+            self.master, 
+            width=700, 
+            height=20,
+            pady=5
+            )
+        self.frame_passwd.pack()
 
         self.button_generarPasswd = tk.Button(
-            self.frame_user, 
+            self.frame_passwd, 
             text="Generar Password",
             command=self.newPassword
             )
         self.button_generarPasswd.pack(side="left")
 
         self.input_password = tk.Entry(
-            self.frame_user,
+            self.frame_passwd,
             textvariable=self.passwd,
             state='readonly',
             width=20
@@ -118,7 +174,10 @@ class Gui:
         
     def createUser(self):
         name = self.userName.get()
-        status = verifyUser(name)
+        email = self.userEmail.get()
+        domain = self.userDomain.get()
+        passwd = self.passwd.get()
+        status = verifyUser(name=name, email=email, domain=domain, passwd=passwd)
         if status["status"] == 400:
             messagebox.showerror(
                 title="Error",
@@ -126,9 +185,12 @@ class Gui:
             )
             return
         createDirectoryWeb(name)
+        createVirtualHost(name=name, email=email, domain=domain)
+        modifyHosts(domain=domain)
+        restartApache()
         messagebox.showinfo(
             title="Confirmacion",
-            message=f"Usuario creado corrrectamente \n Usuario: {self.userName.get()}\n Password: {self.passwd.get()}"
+            message=f"Usuario creado corrrectamente \n Usuario: {name} \n Email: {email} \n Dominio: {domain} \n Password: {passwd}"
             )
         
          

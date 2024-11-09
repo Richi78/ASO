@@ -15,7 +15,8 @@ def generatePassword() -> str:
 
 def createDirectoryWeb(name):
     today = date.today()
-    dirname = str(today.day)+str(today.month)+str(today.year)+f"_{name}"
+    # dirname = str(today.day)+str(today.month)+str(today.year)+
+    dirname = f"{today.day}{today.month}{today.year}_{name}"
     subprocess.run(
         ['mkdir', f'/srv/www/htdocs/{dirname}']
     )
@@ -37,9 +38,35 @@ def createDirectoryWeb(name):
         f.write("</html>")
     with open(f"/srv/www/htdocs/{dirname}/phpinfo.php", 'w') as f:
         f.write("<?php phpinfo(); ?>")
+
+def createVirtualHost(name, email, domain):
+    today = date.today()
+    # dirname = str(today.day)+str(today.month)+str(today.year)+
+    dirname = f"{today.day}{today.month}{today.year}_{name}"
+    subprocess.run(
+        ['touch',f'/etc/apache2/vhosts.d/{dirname}.conf']
+    )
+    with open(f"/etc/apache2/vhosts.d/{dirname}.conf", "w") as f:
+        f.write("<VirtualHost *:80>\n")
+        f.write(f"ServerAdmin {email}\n")
+        f.write(f"ServerName {domain}\n")
+        f.write(f"DocumentRoot /srv/www/htdocs/{dirname}\n")
+        f.write("HostnameLookups Off\n")
+        f.write("UseCanonicalName Off\n")
+        f.write("ServerSignature On\n")
+        f.write(f"<Directory '/srv/www/htdocs/{dirname}'>\n")
+        f.write("AllowOverride All\n")
+        f.write("Require all granted\n")
+        f.write("</Directory>\n")
+        f.write("</VirtualHost>\n")
+
+    
         
-def verifyUser(name):
+def verifyUser(name, email, domain, passwd):
     if name == "" : return {"status": 400, "message": "El nombre de usuario es obligatorio."}
+    if email == "" : return {"status": 400, "message": "El correo electronico del usuario es obligatorio."}
+    if domain == "" : return {"status": 400, "message": "El nombre de dominio es obligatorio."}
+    if passwd == "" : return {"status": 400, "message": "El password es obligatorio."}
     users = subprocess.run(
         ['ls', '/srv/www/htdocs/'],
         text=True,
@@ -51,3 +78,11 @@ def verifyUser(name):
         return {"status": 400, "message": "Este nombre de usuario ya existe"}
     return {"status": 200, "message": "El nombre de usuario esta disponible"}
         
+def restartApache():
+    subprocess.run(
+        ['service','apache2','restart']
+    )
+
+def modifyHosts(domain):
+    with open('/etc/hosts', 'a') as f:
+        f.write(f"127.0.0.1\t{domain}\n")
