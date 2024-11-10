@@ -5,8 +5,9 @@ from datetime import date
 from tkinter import messagebox
 
 def whoami() -> str:
-    iam = subprocess.run(['whoami'], capture_output=True, text=True)
-    return iam.stdout.strip()
+    iam = subprocess.Popen(['whoami'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, _ = iam.communicate()
+    return stdout.decode('utf-8').strip()
 
 def generatePassword() -> str:
     characters = string.ascii_letters + string.digits + string.punctuation

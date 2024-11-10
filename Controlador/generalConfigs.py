@@ -2,30 +2,23 @@ import subprocess
 from tkinter import messagebox
 
 def installApache():
-    isInstalled = validateService('apache2')
-    if isInstalled:
+    result = subprocess.Popen(
+        ['apache2-ctl', 'status'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+    )
+    stdout, stderr = result.communicate()
+    if result.returncode == 0:
         try:
-            subprocess.run(
-                ['zypper','in','-y','apache2', 'apache2-mod_php7'], 
-                text=True,
-                capture_output=True
-                )
-            subprocess.run(
-                ['zypper', 'in', '-y', 'php7', 'php7-mysql', 'php7-pgsql']
-            )
-            subprocess.run(
-                ['/usr/sbin/a2enmod', 'php7']
-            )
-            subprocess.run(
-                ['a2enmod', 'version']
-            )
-            subprocess.run(
-                ["service","apache2","start"]
-            )
+            run_command(['zypper', 'in', '-y', 'apache2', 'apache2-mod_php7'])
+            run_command(['zypper', 'in', '-y', 'php7', 'php7-mysql', 'php7-pgsql'])
+            run_command(['/usr/sbin/a2enmod', 'php7'])
+            run_command(['a2enmod', 'version'])
+            run_command(['service', 'apache2', 'start'])
             messagebox.showinfo(
-                title="Confirmacion", 
+                title="Confirmacion",
                 message="El servicio Apache se ha instalado correctamente."
-                )
+            )
         except subprocess.CalledProcessError as e:
             print("Error al instalar Apache2:", e)
     else:
@@ -34,32 +27,23 @@ def installApache():
 
 def installFTP():
     isInstalled = validateService('vsftpd')
-    if isInstalled:    
+    if isInstalled:
         try:
-            result = subprocess.run(
-                ['zypper','in','-y','vsftpd'], 
-                text=True,
-                capture_output=True
-                )
-            print("stdout: ", result.stdout)
-            print("stderr: ", result.stderr)
-            
+            result = run_command(['zypper', 'in', '-y', 'vsftpd'])
+            print("stdout: ", result['stdout'])
+            print("stderr: ", result['stderr'])
+
             # abrir puertos
-            subprocess.run(
-                ['firewall-cmd', '--permanent', '--add-port=21/tcp']
-            )
-            subprocess.run(
-                ['firewall-cmd', '--reload']
-            )
+            run_command(['firewall-cmd', '--permanent', '--add-port=21/tcp'])
+            run_command(['firewall-cmd', '--reload'])
             print("Puerto 21 abierto")
+
             # iniciar servicio
-            subprocess.run(
-                ['service', 'vsftpd','start']
-            )          
+            run_command(['service', 'vsftpd', 'start'])
             messagebox.showinfo(
-                title="Confirmacion", 
+                title="Confirmacion",
                 message="El servicio FTP se ha instalado correctamente."
-                )  
+            )
         except subprocess.CalledProcessError as e:
             print("Error al instalar FTP:", e)
     else:
@@ -70,37 +54,44 @@ def installPostGreSQL():
     isInstalled = validateService('postgresql')
     if isInstalled:
         try:
-            result = subprocess.run(
-                ['zypper','in','-y', 'postgresql11','postgresql11-server'],
-                text=True,
-                capture_output=True
-                )
-            print("stdout: ", result.stdout)
-            print("stderr: ", result.stderr)
-            
-            #iniciar servicio
-            subprocess.run(
-                ["service","postgresql","start"]
-            )
+            result = run_command(['zypper', 'in', '-y', 'postgresql11', 'postgresql11-server'])
+            print("stdout: ", result['stdout'])
+            print("stderr: ", result['stderr'])
+
+            # iniciar servicio
+            run_command(['service', 'postgresql', 'start'])
             messagebox.showinfo(
-                title="Confirmacion", 
+                title="Confirmacion",
                 message="El servicio PostgreSQL se ha instalado correctamente."
-                )
+            )
         except subprocess.CalledProcessError as e:
             print("Error al instalar PostgreSQL:", e)
     else:
         print("El servicio PostgreSQL ya esta instalado")
         messagebox.showinfo(title="Mensaje", message="El servicio PostgreSQL ya esta instalado.")
-    
+
 def validateService(service):
     """
-    Valida si un servicio ya esta instalado
+    Valida si un servicio ya está instalado.
     """
-    result = subprocess.run(
-        ['service',f'{service}','status'],
-        text=True,
-        capture_output=True
+    result = subprocess.Popen(
+        ['service', f'{service}', 'status'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
     )
+    stdout, stderr = result.communicate()
     # si stderr tiene contenido, hay que instalar
-    if result.stderr: return True
-    else: return False
+    return bool(stderr)
+
+def run_command(cmd):
+    """
+    Ejecuta un comando y devuelve stdout y stderr como texto.
+    """
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()
+    return {
+        'stdout': stdout.decode('utf-8'),
+        'stderr': stderr.decode('utf-8'),
+        'returncode': process.returncode
+    }
+
