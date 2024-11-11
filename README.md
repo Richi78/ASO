@@ -27,4 +27,4 @@ python -m venv venv
   ```
   source venv/bin/activate
   ```
-2. Puedes verificar la versión de python de tu entorno virtual para asegurarte que siga siendo la versión 3.12
+2. Puedes verificar la versión de python de tu entorno virtual para asegurarte que siga siendo la versión 3.12.7
