@@ -78,11 +78,11 @@ def deleteUser(user):
 
     # eliminar de base de datos con nombre del usuario si existe
     try:
-        cur.execute(sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(user)))
-        print(f"Base de datos '{user}' eliminada.")
+        cur.execute(sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(user["name"])))
+        print(f"Base de datos '{user["name"]}' eliminada.")
     # eliminar usuario con nombre del usuario si existe
-        cur.execute(sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(user)))
-        print(f"Usuario '{user}' eliminado.")
+        cur.execute(sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(user["name"])))
+        print(f"Usuario '{user["name"]}' eliminado.")
     except:
         pass
 
@@ -96,7 +96,7 @@ def deleteUser(user):
         pg_hba = f.readlines()
     index = int()
     for i in range(0,len(pg_hba)):
-        if f"local   {user}" in pg_hba[i]:
+        if f"local   {user["name"]}" in pg_hba[i]:
             index = i
             break
     if index == 0:
