@@ -64,15 +64,16 @@ def createVirtualHost(name, email, domain):
 
     
         
-def verifyUser(name, email, domain, passwd):
+def verifyUser(name, email, domain, passwd, db, quote):
     if name == "" : return {"status": 400, "message": "El nombre de usuario es obligatorio."}
     if email == "" : return {"status": 400, "message": "El correo electronico del usuario es obligatorio."}
     if domain == "" : return {"status": 400, "message": "El nombre de dominio es obligatorio."}
     if passwd == "" : return {"status": 400, "message": "El password es obligatorio."}
+    if db == "" : return {"status": 400, "message": "El tipo de base de datos es obligatorio."}
+    if quote == "" : return {"status": 400, "message": "El quota de disco es obligatorio."}
     with open("usersData.json", "r", encoding='utf-8') as f:
         jsonData = json.load(f)
     usersList = [x["name"] for x in jsonData["users"] ]
-    print(f"Lista de usuarios: \n {usersList}")
     if name in usersList: 
         return {"status": 400, "message": "Este nombre de usuario ya existe"}
     return {"status": 200, "message": "El nombre de usuario esta disponible"}

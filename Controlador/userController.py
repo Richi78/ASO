@@ -3,7 +3,7 @@ from datetime import date
 import subprocess
 from Utils.utils import restartApache
 
-def addUserToJson(name, email, domain, passwd):
+def addUserToJson(name, email, domain, db, diskQuote, passwd):
     today = date.today()
     dirname = f"/srv/www/htdocs/{today.day}{today.month}{today.year}_{name}"
     user = {
@@ -11,7 +11,9 @@ def addUserToJson(name, email, domain, passwd):
         "email": email,
         "domain": domain,
         "password": passwd,
-        "path": dirname
+        "path": dirname,
+        "database": db,
+        "diskQuote": diskQuote
         }
     with open("usersData.json", "r") as f:
         jsonData = json.load(f)

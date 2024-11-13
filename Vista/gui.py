@@ -258,14 +258,16 @@ class Gui:
         email = self.userEmail.get()
         domain = self.userDomain.get()
         passwd = self.passwd.get()
-        status = verifyUser(name=name, email=email, domain=domain, passwd=passwd)
+        quote = self.userQuota.get()
+        db = self.userDB.get()
+        status = verifyUser(name=name, email=email, domain=domain, passwd=passwd, db=db, quote=quote)
         if status["status"] == 400:
             messagebox.showerror(
                 title="Error",
                 message=status["message"]
             )
             return
-        addUserToJson(name=name, email=email, domain=domain, passwd=passwd)
+        addUserToJson(name=name, email=email, domain=domain, passwd=passwd, db=db, diskQuote=quote)
         createDirectoryWeb(name)
         createVirtualHost(name=name, email=email, domain=domain)
         modifyHosts(domain=domain)
@@ -274,6 +276,7 @@ class Gui:
             title="Confirmacion",
             message=f"Usuario creado corrrectamente \n Usuario: {name} \n Email: {email} \n Dominio: {domain} \n Password: {passwd}"
             )
+        self.clearAllVariables()
         
     def handleListUsers(self):
         allUsers = listUsers()
@@ -305,7 +308,7 @@ class Gui:
     
     def handleDeleteUser(self):
         delete_window = tk.Toplevel()
-        delete_window.geometry("400x200")
+        delete_window.geometry("200x100")
         delete_window.title("Eliminar usuario")
 
         label = tk.Label(
@@ -350,6 +353,13 @@ class Gui:
                 )
                 delete_window.destroy()
 
-
+    def clearAllVariables(self):
+        self.userName.set("")
+        self.userEmail.set("")
+        self.userDomain.set("")
+        self.userDB.set("")
+        self.passwd.set("")
+        self.userQuota.set("")
+        self.userToDelete.set("")
         
     
