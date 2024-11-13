@@ -103,7 +103,7 @@ def deleteUser(user):
         print("User not found")
     else:    
         del pg_hba[index]
-        with open("/etc/postgresql/12/main/pg_hba.conf", "w") as f:
+        with open("/var/lib/pgsql/data/pg_hba.conf", "w") as f:
             f.writelines(pg_hba)
         print("Usuario borrado del archivo pg_hba.conf")
 
