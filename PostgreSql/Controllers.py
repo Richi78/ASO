@@ -72,7 +72,7 @@ def configure_pg_hba(db_name, db_user):
         # Configurar la linea a insertarce en la configuracion
         new_line = f"{'local':<8}{db_user:<16}{db_name:<40}{'md5':<}"
         # Insertar la nueva linea
-        lines[85] = new_line + "\n" + lines[85]
+        lines[83] = new_line + "\n" + lines[83]
         # Guardar la configuracion
         with open(hba_path, "w") as hba_file:
             hba_file.writelines(lines)
