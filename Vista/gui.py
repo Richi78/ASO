@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 from Controlador.generalConfigs import installApache,installFTP,installPostGreSQL
 from Utils.utils import generatePassword, createDirectoryWeb, verifyUser, createVirtualHost, restartApache, modifyHosts
+from Controlador.userController import addUserToJson
 
 class Gui:
     def __init__(self, master) -> None:
@@ -184,6 +185,7 @@ class Gui:
                 message=status["message"]
             )
             return
+        addUserToJson(name=name, email=email, domain=domain, passwd=passwd)
         createDirectoryWeb(name)
         createVirtualHost(name=name, email=email, domain=domain)
         modifyHosts(domain=domain)

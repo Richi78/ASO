@@ -1,0 +1,18 @@
+{
+    "users": [
+      {
+        "name": "richi",
+        "email": "richi@richi.aso",
+        "domain": "richi.com",
+        "password": "~O:*)AofxmM|GVmf",
+        "path": "/srv/www/htdocs/9112024_richi"
+      },
+      {
+        "name": "andy",
+        "email": "andy@andy.andy",
+        "domain": "andy.feder",
+        "password": "-6Y1qftq.R7+&\\]B",
+        "path": "/srv/www/htdocs/9112024_andy"
+      }
+    ]
+  }
