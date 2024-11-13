@@ -232,7 +232,7 @@ class Gui:
         self.button_updateUser = tk.Button(
             self.frame_addons,
             text="Editar usuario",
-            # command=self.createUser
+            command=self.handleUpdateUser
         )
         self.button_updateUser.pack(side="left")
 
@@ -352,6 +352,30 @@ class Gui:
                     message=status["message"]
                 )
                 delete_window.destroy()
+
+    def handleUpdateUser(self):
+        update_window = tk.Toplevel()
+        update_window.geometry("200x100")
+        update_window.title("Eliminar usuario")
+
+        label = tk.Label(
+            update_window,
+            text="Ingrese usuario"
+            )
+        label.pack()
+
+        entry = tk.Entry(
+            update_window,
+            textvariable=self.userToDelete
+            )
+        entry.pack()
+
+        button = tk.Button(
+            update_window,
+            text="Editar",
+            # command=lambda: confirm()
+            )
+        button.pack()
 
     def clearAllVariables(self):
         self.userName.set("")
