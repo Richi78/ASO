@@ -63,7 +63,7 @@ def configure_postgresql(db_name, db_user, db_password):
 # 3. Configurar archivo pg_hba.conf para limitar el acceso local
 def configure_pg_hba(db_name, db_user):
     try:
-        hba_path = "/var/lib/pgsql/data/pg_hba.test.conf"
+        hba_path = "/var/lib/pgsql/data/pg_hba.conf"
         # Configuración de acceso local
         lines = []
         # Abrir el archivo pg_hba.conf
@@ -77,7 +77,7 @@ def configure_pg_hba(db_name, db_user):
         with open(hba_path, "w") as hba_file:
             hba_file.writelines(lines)
         # Reiniciar el servicio postgresql
-        subprocess.run(['sudo', 'postgresql', 'restart'], check=True)
+        subprocess.run(['sudo', 'service','postgresql', 'restart'], check=True)
         print("Archivo pg_hba.conf configurado y PostgreSQL reiniciado.")
     except Exception as e:
         print("Error al configurar pg_hba.conf: ", e)
