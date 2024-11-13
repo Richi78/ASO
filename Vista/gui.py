@@ -3,8 +3,8 @@ import tkinter as tk
 from tkinter import messagebox
 from Controlador.generalConfigs import installApache,installFTP,installPostGreSQL
 from Utils.utils import generatePassword, createDirectoryWeb, verifyUser, createVirtualHost, restartApache, modifyHosts
-
-class Gui:
+from PostgreSql.Controllers import  configure_postgresql, configure_pg_hba,  connect_to_db
+,class Gui:
     def __init__(self, master) -> None:
         self.master = master
         self.master.geometry('600x300')
@@ -188,6 +188,8 @@ class Gui:
         createVirtualHost(name=name, email=email, domain=domain)
         modifyHosts(domain=domain)
         restartApache()
+        configure_postgresql(db_name=name, db_user=name, db_password=passwd)
+        configure_pg_hba(db_name=name, db_user=name)
         messagebox.showinfo(
             title="Confirmacion",
             message=f"Usuario creado corrrectamente \n Usuario: {name} \n Email: {email} \n Dominio: {domain} \n Password: {passwd}"

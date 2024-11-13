@@ -63,7 +63,7 @@ def configure_postgresql(db_name, db_user, db_password):
 # 3. Configurar archivo pg_hba.conf para limitar el acceso local
 def configure_pg_hba(db_name, db_user):
     try:
-        hba_path = "/var/lib/pgsql/data/pg_hba.conf"
+        hba_path = "/var/lib/pgsql/data/pg_hba.test.conf"
         # Configuración de acceso local
         lines = []
         # Abrir el archivo pg_hba.conf
