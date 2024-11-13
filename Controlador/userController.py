@@ -20,3 +20,15 @@ def addUserToJson(name, email, domain, passwd):
 
     with open("usersData.json.bk", 'w') as f:
         json.dump(jsonData, f, indent=2)
+
+def updateUser():
+    pass
+
+def deleteUser():
+    pass
+
+def listUsers():
+    with open("usersData.json", "r") as f:
+        data = json.load(f)
+    usersList = [x["name"] for x in data["users"] ]
+    return usersList

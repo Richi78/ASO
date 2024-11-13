@@ -4,7 +4,7 @@ from tkinter import messagebox
 from tkinter import ttk
 from Controlador.generalConfigs import installApache,installFTP,installPostGreSQL
 from Utils.utils import generatePassword, createDirectoryWeb, verifyUser, createVirtualHost, restartApache, modifyHosts
-from Controlador.userController import addUserToJson
+from Controlador.userController import addUserToJson, listUsers
 
 class Gui:
     def __init__(self, master) -> None:
@@ -211,8 +211,36 @@ class Gui:
             command=self.createUser
         )
         self.button_crearUsuario.pack()
-        
-        
+
+        # Frame addons
+        self.frame_addons = tk.Frame(
+            self.master, 
+            width=700, 
+            height=200,
+            pady=5
+            )
+        self.frame_addons.pack()
+
+        self.button_listUsers = tk.Button(
+            self.frame_addons,
+            text="Listar usuarios",
+            command=self.handleListUsers
+        )
+        self.button_listUsers.pack(side="left")
+
+        self.button_updateUser = tk.Button(
+            self.frame_addons,
+            text="Editar usuario",
+            # command=self.createUser
+        )
+        self.button_updateUser.pack(side="left")
+
+        self.button_deleteUser = tk.Button(
+            self.frame_addons,
+            text="Eliminar usuario",
+            # command=self.createUser
+        )
+        self.button_deleteUser.pack(side="left")
 
         # Eventos
         # self.master.bind('',)
@@ -246,5 +274,30 @@ class Gui:
             message=f"Usuario creado corrrectamente \n Usuario: {name} \n Email: {email} \n Dominio: {domain} \n Password: {passwd}"
             )
         
-         
+    def handleListUsers(self):
+        allUsers = listUsers()
+        listUsers_window = tk.Toplevel()
+        listUsers_window.geometry("400x450")
+        listUsers_window.title("Usuarios")
         
+        label_list = tk.Label(
+            listUsers_window,
+            text="Lista de usuarios"
+            )
+        label_list.pack()
+        
+        for e in allUsers:
+            label_user = tk.Label(
+                listUsers_window,
+                text=e,
+                pady=5
+            )
+            label_user.pack()
+
+        button = tk.Button(
+            listUsers_window,
+            text="Aceptar",
+            command= lambda: listUsers_window.destroy(),
+            pady=5,
+            )
+        button.pack()
