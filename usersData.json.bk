@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "name": "wero",
+      "email": "wero",
+      "domain": "wero.com",
+      "password": "MS]_[U$dxv<x*lm|",
+      "path": "/srv/www/htdocs/13112024_wero"
+    },
+    {
+      "name": "andy",
+      "email": "andy",
+      "domain": "andy.com",
+      "password": "C\\oJp~_&hCn:pfiL",
+      "path": "/srv/www/htdocs/13112024_andy"
+    },
+    {
+      "name": "misho",
+      "email": "misho@misho.aso",
+      "domain": "misho.com",
+      "password": "9Yu>eCe'_qTMB!az",
+      "path": "/srv/www/htdocs/13112024_misho",
+      "database": "PostgreSQL",
+      "diskQuote": "500MB"
+    },
+    {
+      "name": "test1",
+      "email": "test1@aso",
+      "domain": "test.com",
+      "password": "93oX&&ly)X!%P{<:",
+      "path": "/srv/www/htdocs/13112024_test1",
+      "database": "PostgreSQL",
+      "diskQuote": "200MB"
+    }
+  ]
+}

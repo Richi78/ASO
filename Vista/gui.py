@@ -1,10 +1,13 @@
 
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import ttk
 from Controlador.generalConfigs import installApache,installFTP,installPostGreSQL
 from Utils.utils import generatePassword, createDirectoryWeb, verifyUser, createVirtualHost, restartApache, modifyHosts
 from PostgreSql.Controllers import  configure_postgresql, configure_pg_hba,  connect_to_db
-,class Gui:
+from Controlador.userController import addUserToJson, listUsers, getUserByName,deleteUser
+
+class Gui:
     def __init__(self, master) -> None:
         self.master = master
         self.master.geometry('600x300')
@@ -23,7 +26,10 @@ from PostgreSql.Controllers import  configure_postgresql, configure_pg_hba,  con
         self.userName = tk.StringVar(value="")
         self.userEmail = tk.StringVar(value="")
         self.userDomain = tk.StringVar(value="")
+        self.userDB = tk.StringVar(value="")
         self.passwd = tk.StringVar(value="")
+        self.userQuota = tk.StringVar(value="")
+        self.userToDelete = tk.StringVar(value="")
 
         # Widgets
         
@@ -143,7 +149,55 @@ from PostgreSql.Controllers import  configure_postgresql, configure_pg_hba,  con
             width=20
             )
         self.input_password.pack(side="left")
+
+        # Frame userDB
+
+        self.frame_userDB = tk.Frame(
+            self.master,
+            width=700,
+            height=200,
+            pady=5
+        )
+        self.frame_userDB.pack()
+
+        self.label_userDB = tk.Label(
+            self.frame_userDB,
+            text="Base de datos"
+            )
+        self.label_userDB.pack(side="left")
+
+        self.combo_DB = ttk.Combobox(
+            self.frame_userDB,
+            values=['PostgreSQL','MySQL'],
+            state="readonly",
+            textvariable=self.userDB
+        )
+        self.combo_DB.pack()
+    
+        # Frame Quota
         
+        self.frame_userQuota = tk.Frame(
+            self.master,
+            width=700,
+            height=200,
+            pady=5
+        )
+        self.frame_userQuota.pack()
+
+        self.label_userQuota = tk.Label(
+            self.frame_userQuota,
+            text="Espacio de disco"
+            )
+        self.label_userQuota.pack(side="left")
+
+        self.combo_Quota = ttk.Combobox(
+            self.frame_userQuota,
+            values=['200MB','500MB', '1GB'],
+            state="readonly",
+            textvariable=self.userQuota
+        )
+        self.combo_Quota.pack()
+
         # Frame create user
         self.frame_createUser = tk.Frame(
             self.master, 
@@ -159,8 +213,36 @@ from PostgreSql.Controllers import  configure_postgresql, configure_pg_hba,  con
             command=self.createUser
         )
         self.button_crearUsuario.pack()
-        
-        
+
+        # Frame addons
+        self.frame_addons = tk.Frame(
+            self.master, 
+            width=700, 
+            height=200,
+            pady=5
+            )
+        self.frame_addons.pack()
+
+        self.button_listUsers = tk.Button(
+            self.frame_addons,
+            text="Listar usuarios",
+            command=self.handleListUsers
+        )
+        self.button_listUsers.pack(side="left")
+
+        self.button_updateUser = tk.Button(
+            self.frame_addons,
+            text="Editar usuario",
+            # command=self.createUser
+        )
+        self.button_updateUser.pack(side="left")
+
+        self.button_deleteUser = tk.Button(
+            self.frame_addons,
+            text="Eliminar usuario",
+            command=self.handleDeleteUser
+        )
+        self.button_deleteUser.pack(side="left")
 
         # Eventos
         # self.master.bind('',)
@@ -171,19 +253,22 @@ from PostgreSql.Controllers import  configure_postgresql, configure_pg_hba,  con
 
     def newPassword(self):
         self.passwd.set(generatePassword())
-        
+
     def createUser(self):
         name = self.userName.get()
         email = self.userEmail.get()
         domain = self.userDomain.get()
         passwd = self.passwd.get()
-        status = verifyUser(name=name, email=email, domain=domain, passwd=passwd)
+        quote = self.userQuota.get()
+        db = self.userDB.get()
+        status = verifyUser(name=name, email=email, domain=domain, passwd=passwd, db=db, quote=quote)
         if status["status"] == 400:
             messagebox.showerror(
                 title="Error",
                 message=status["message"]
             )
             return
+        addUserToJson(name=name, email=email, domain=domain, passwd=passwd, db=db, diskQuote=quote)
         createDirectoryWeb(name)
         createVirtualHost(name=name, email=email, domain=domain)
         modifyHosts(domain=domain)
@@ -194,6 +279,90 @@ from PostgreSql.Controllers import  configure_postgresql, configure_pg_hba,  con
             title="Confirmacion",
             message=f"Usuario creado corrrectamente \n Usuario: {name} \n Email: {email} \n Dominio: {domain} \n Password: {passwd}"
             )
+        self.clearAllVariables()
         
-         
+    def handleListUsers(self):
+        allUsers = listUsers()
+        listUsers_window = tk.Toplevel()
+        listUsers_window.geometry("400x450")
+        listUsers_window.title("Usuarios")
         
+        label_list = tk.Label(
+            listUsers_window,
+            text="Lista de usuarios"
+            )
+        label_list.pack()
+        
+        for e in allUsers:
+            label_user = tk.Label(
+                listUsers_window,
+                text=e,
+                pady=5
+            )
+            label_user.pack()
+
+        button = tk.Button(
+            listUsers_window,
+            text="Aceptar",
+            command= lambda: listUsers_window.destroy(),
+            pady=5,
+            )
+        button.pack()
+    
+    def handleDeleteUser(self):
+        delete_window = tk.Toplevel()
+        delete_window.geometry("200x100")
+        delete_window.title("Eliminar usuario")
+
+        label = tk.Label(
+            delete_window,
+            text="Ingrese usuario"
+            )
+        label.pack()
+
+        entry = tk.Entry(
+            delete_window,
+            textvariable=self.userToDelete
+            )
+        entry.pack()
+
+        button = tk.Button(
+            delete_window,
+            text="Eliminar",
+            command=lambda: confirm()
+            )
+        button.pack()
+
+        def confirm():
+            inputText = self.userToDelete.get()
+            user = getUserByName(name=inputText)
+            if not user:          
+                messagebox.showerror(
+                    title="Error",
+                    message=f"El usuario no existe"
+                )
+                return
+
+            result = messagebox.askyesno(
+                title="Confirmacion",
+                message=f"Estas seguro de eliminar el usuario {self.userToDelete.get()}?"
+                )
+            
+            if result:
+                status = deleteUser(user=user)
+                messagebox.showinfo(
+                    title="Confirmacion",
+                    message=status["message"]
+                )
+                delete_window.destroy()
+
+    def clearAllVariables(self):
+        self.userName.set("")
+        self.userEmail.set("")
+        self.userDomain.set("")
+        self.userDB.set("")
+        self.passwd.set("")
+        self.userQuota.set("")
+        self.userToDelete.set("")
+        
+    
