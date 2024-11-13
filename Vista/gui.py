@@ -4,7 +4,7 @@ from tkinter import messagebox
 from tkinter import ttk
 from Controlador.generalConfigs import installApache,installFTP,installPostGreSQL
 from Utils.utils import generatePassword, createDirectoryWeb, verifyUser, createVirtualHost, restartApache, modifyHosts
-from Controlador.userController import addUserToJson, listUsers
+from Controlador.userController import addUserToJson, listUsers, getUserByName,deleteUser
 
 class Gui:
     def __init__(self, master) -> None:
@@ -28,6 +28,7 @@ class Gui:
         self.userDB = tk.StringVar(value="")
         self.passwd = tk.StringVar(value="")
         self.userQuota = tk.StringVar(value="")
+        self.userToDelete = tk.StringVar(value="")
 
         # Widgets
         
@@ -238,7 +239,7 @@ class Gui:
         self.button_deleteUser = tk.Button(
             self.frame_addons,
             text="Eliminar usuario",
-            # command=self.createUser
+            command=self.handleDeleteUser
         )
         self.button_deleteUser.pack(side="left")
 
@@ -301,3 +302,54 @@ class Gui:
             pady=5,
             )
         button.pack()
+    
+    def handleDeleteUser(self):
+        delete_window = tk.Toplevel()
+        delete_window.geometry("400x200")
+        delete_window.title("Eliminar usuario")
+
+        label = tk.Label(
+            delete_window,
+            text="Ingrese usuario"
+            )
+        label.pack()
+
+        entry = tk.Entry(
+            delete_window,
+            textvariable=self.userToDelete
+            )
+        entry.pack()
+
+        button = tk.Button(
+            delete_window,
+            text="Eliminar",
+            command=lambda: confirm()
+            )
+        button.pack()
+
+        def confirm():
+            inputText = self.userToDelete.get()
+            user = getUserByName(name=inputText)
+            if not user:          
+                messagebox.showerror(
+                    title="Error",
+                    message=f"El usuario no existe"
+                )
+                return
+
+            result = messagebox.askyesno(
+                title="Confirmacion",
+                message=f"Estas seguro de eliminar el usuario {self.userToDelete.get()}?"
+                )
+            
+            if result:
+                status = deleteUser(user=user)
+                messagebox.showinfo(
+                    title="Confirmacion",
+                    message=status["message"]
+                )
+                delete_window.destroy()
+
+
+        
+    

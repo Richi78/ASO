@@ -1,18 +1,18 @@
 {
-    "users": [
-      {
-        "name": "richi",
-        "email": "richi@richi.aso",
-        "domain": "richi.com",
-        "password": "~O:*)AofxmM|GVmf",
-        "path": "/srv/www/htdocs/9112024_richi"
-      },
-      {
-        "name": "andy",
-        "email": "andy@andy.andy",
-        "domain": "andy.feder",
-        "password": "-6Y1qftq.R7+&\\]B",
-        "path": "/srv/www/htdocs/9112024_andy"
-      }
-    ]
-  }
+  "users": [
+    {
+      "name": "wero",
+      "email": "wero",
+      "domain": "wero.com",
+      "password": "MS]_[U$dxv<x*lm|",
+      "path": "/srv/www/htdocs/13112024_wero"
+    },
+    {
+      "name": "andy",
+      "email": "andy",
+      "domain": "andy.com",
+      "password": "C\\oJp~_&hCn:pfiL",
+      "path": "/srv/www/htdocs/13112024_andy"
+    }
+  ]
+}
