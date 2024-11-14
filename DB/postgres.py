@@ -115,8 +115,14 @@ def delete_postgresql_database_and_user(username):
         conn = connect_to_db("postgres", "postgres", "postgres")
         conn.autocommit = True
         cur = conn.cursor()
-        cur.execute(f"DROP DATABASE IF EXISTS {username};")
-        cur.execute(f"DROP USER IF EXISTS '{username}'@'localhost';")
+        try:
+            cur.execute(sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(username)))
+            print(f"Base de datos '{user["name"]}' eliminada.")
+            # eliminar usuario con nombre del usuario si existe
+            cur.execute(sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(username)))
+            print(f"Usuario '{user["name"]}' eliminado.")
+        except:
+            pass
         cur.close() 
         conn.close()
         print("Database and user deleted successfully.")
