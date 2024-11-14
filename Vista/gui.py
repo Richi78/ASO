@@ -5,6 +5,7 @@ from tkinter import ttk
 from Controlador.generalConfigs import installApache,installFTP,installPostGreSQL
 from Utils.utils import generatePassword, createDirectoryWeb, verifyUser, createVirtualHost, restartApache, modifyHosts
 from DB.postgres import  configure_postgresql, configure_pg_hba,  connect_to_db
+from DB.mariadb import install_mariabd, enable_mariadb, secure_mariadb, create_database_and_user, setup_mariadb
 from Controlador.userController import addUserToJson, listUsers, getUserByName,deleteUser
 
 class Gui:
@@ -169,7 +170,7 @@ class Gui:
 
         self.combo_DB = ttk.Combobox(
             self.frame_userDB,
-            values=['PostgreSQL','MySQL'],
+            values=['PostgreSQL','MariaDB'],
             state="readonly",
             textvariable=self.userDB
         )
@@ -274,8 +275,11 @@ class Gui:
         createVirtualHost(name=name, email=email, domain=domain)
         modifyHosts(domain=domain)
         restartApache()
-        configure_postgresql(db_name=name, db_user=name, db_password=passwd)
-        configure_pg_hba(db_name=name, db_user=name)
+        if db == "MariaDB":
+            create_database_and_user(username=name, password=passwd)
+        else:
+            configure_postgresql(db_name=name, db_user=name, db_password=passwd)
+            configure_pg_hba(db_name=name, db_user=name)
         messagebox.showinfo(
             title="Confirmacion",
             message=f"Usuario creado corrrectamente \n Usuario: {name} \n Email: {email} \n Dominio: {domain} \n Password: {passwd}"
