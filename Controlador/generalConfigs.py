@@ -1,5 +1,6 @@
 import subprocess
 from tkinter import messagebox
+from DB.postgres import setup_postresql,setup_pg_hba
 
 def installApache():
     isInstalled = validateService('apache2')
@@ -88,6 +89,9 @@ def installPostGreSQL():
                 )
         except subprocess.CalledProcessError as e:
             print("Error al instalar PostgreSQL:", e)
+        
+        setup_postresql()
+        setup_pg_hba()
     else:
         print("El servicio PostgreSQL ya esta instalado")
         messagebox.showinfo(title="Mensaje", message="El servicio PostgreSQL ya esta instalado.")

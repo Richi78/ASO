@@ -12,6 +12,8 @@ __all__ = [
     "create_home_directory",
     "connect_to_db",
     "delete_postgresql_database_and_user",
+    "setup_postresql",
+    "setup_pg_hba",
 ]
 
 
@@ -38,6 +40,19 @@ def install_services():
         print("Error en la instalación: ", e)
 
 #Crear base de datos y usuario en PostgreSQL
+
+def setup_postresql():
+    try:
+        subprocess.run(['sudo', 'service', 'postgresql', 'start'], check=True)
+        conn = psycopg2.connect(dbname="postgres", user="postgres")
+        conn.autocommit = True
+        cur = conn.cursor()
+        cur.execute("ALTER USER postgres PASSWORD 'postgres';")
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print("Error en la configuración de PostgreSQL: ", e)
+ 
 
 def setup_pg_hba():
     hba_path = "/var/lib/pgsql/data/pg_hba.conf"
