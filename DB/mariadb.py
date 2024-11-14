@@ -50,18 +50,14 @@ def create_database_and_user(username, password):
     """Crear una nueva base de datos y usuario con privilegios solo en esa base de datos."""
     print(f"Creando base de datos y usuario para '{username}'...")
 
-    comandos = [
-        f"sudo mysql -e \"CREATE DATABASE {username};\"",
-        f"sudo mysql -e \"CREATE USER '{username}'@'localhost' IDENTIFIED BY '{password}';\"",
-        f"sudo mysql -e \"GRANT ALL PRIVILEGES ON {username}.* TO '{username}'@'localhost';\"",
-        "sudo mysql -e \"FLUSH PRIVILEGES;\""
-    ]
-
-    for comando in comandos:
-        if not subprocess.run(comando.split("\n")):
-            print(f"No se pudo crear base de datos o usuario para '{username}'.")
-            return False
-
+    # Crear la base de datos para el usuario
+    subprocess.run(f"sudo mysql -e \"CREATE DATABASE {username};\"")
+    # Crear el usuario para la base de datos
+    subprocess.run(f"sudo mysql -e \"CREATE USER '{username}'@'localhost' IDENTIFIED BY '{password}';\"")
+    # Asignar permisos al usuario sobre la base de datos
+    subprocess.run(f"sudo mysql -e \"GRANT ALL PRIVILEGES ON {username}.* TO '{username}'@'localhost';\"")
+    # Guardar los cambios en la configuraci n de MariaDB
+    subprocess.run("sudo mysql -e \"FLUSH PRIVILEGES;\"")
     print(f"Base de datos y usuario '{username}' creados correctamente.")
     return True
 
