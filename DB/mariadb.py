@@ -29,19 +29,19 @@ def enable_mariadb():
 
 def secure_mariadb():
     """Ejecutar la configuracion de mysql_secure_installation."""
-    print("Asegurando la instalaci n de MariaDB...")
+    print("Asegurando la instalaci0n de MariaDB...")
 
     comandos = [
-        "sudo mysql -e \"SET PASSWORD FOR 'root'@'localhost' = PASSWORD('mariadb');\"",
-        "sudo mysql -e \"DELETE FROM mysql.user WHERE User='';\"",
-        "sudo mysql -e \"DROP DATABASE test;\"",
-        "sudo mysql -e \"DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';\"",
-        "sudo mysql -e \"FLUSH PRIVILEGES;\""
+        f"SET PASSWORD FOR 'root'@'localhost' = PASSWORD('mariadb');",
+        f"DELETE FROM mysql.user WHERE User='';",
+        f"DROP DATABASE IF EXISTS test;",
+        f"DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';",
+        f"FLUSH PRIVILEGES;"
     ]
 
     for comando in comandos:
-        if not subprocess.run(comando.split(" ")):
-            print("No se pudo asegurar la instalaci n de MariaDB.")
+        if not subprocess.run(["sudo","mysql", "-e", comando]):
+            print("No se pudo asegurar la instalacion de MariaDB.")
             return False
     print("MariaDB asegurado correctamente.")
     return True
@@ -67,14 +67,34 @@ def create_database_and_user(username, password):
         print(f"Error al asignar permisos al usuario '{username}' sobre '{username}'.")
         return False
     if subprocess.run(["sudo", "mysql", "-e", "FLUSH PRIVILEGES;"]):
-        print("Cambios guardados en la configuraci n de MariaDB.")
+        print("Cambios guardados en la configuracion de MariaDB.")
 
     print(f"Base de datos y usuario '{username}' creados correctamente.")
     return True
 
+def delete_database_and_user(username):
+    """Eliminar la base de datos y usuario creados anteriormente."""
+    print(f"Eliminando base de datos y usuario para '{username}'...")
+
+    if subprocess.run(["sudo", "mysql", "-e", f"DROP DATABASE IF EXISTS {username};"]):
+        print(f"Base de datos '{username}' eliminada.")
+    else:
+        print(f"Error al eliminar la base de datos '{username}'.")
+        return False
+    if subprocess.run(["sudo", "mysql", "-e", f"DROP USER IF EXISTS '{username}'@'localhost';"]):
+        print(f"Usuario '{username}' eliminado.")
+    else:
+        print(f"Error al eliminar el usuario '{username}'.")
+        return False
+    if subprocess.run(["sudo", "mysql", "-e", "FLUSH PRIVILEGES;"]):
+        print("Cambios guardados en la configuracion de MariaDB.")
+
+    print(f"Base de datos y usuario '{username}' eliminados correctamente.")
+    return True
+
 def setup_mariadb():
     """Proceso de configuracion completo para MariaDB."""
-    print("Iniciando el proceso de configuraci n de MariaDB...")
+    print("Iniciando el proceso de configuracion de MariaDB...")
     if not install_mariabd():
         return
     if not enable_mariadb():
@@ -82,4 +102,5 @@ def setup_mariadb():
     if not secure_mariadb():
         return
     print("Configuracion de MariaDB completada correctamente.")
+
 
