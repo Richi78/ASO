@@ -113,6 +113,7 @@ def connect_to_db(db_name, db_user, db_password):
 def delete_postgresql_database_and_user(username):
     try:
         conn = connect_to_db("postgres", "postgres", "postgres")
+        conn.autocommit = True
         cur = conn.cursor()
         cur.execute(f"DROP DATABASE IF EXISTS {username};")
         cur.execute(f"DROP USER IF EXISTS '{username}'@'localhost';")
