@@ -4,7 +4,7 @@ from tkinter import messagebox
 from tkinter import ttk
 from Controlador.generalConfigs import installApache,installFTP,installPostGreSQL
 from Utils.utils import generatePassword, createDirectoryWeb, verifyUser, createVirtualHost, restartApache, modifyHosts
-from PostgreSql.Controllers import  configure_postgresql, configure_pg_hba,  connect_to_db
+from DB.postgres import  configure_postgresql, configure_pg_hba,  connect_to_db
 from Controlador.userController import addUserToJson, listUsers, getUserByName,deleteUser
 
 class Gui:
