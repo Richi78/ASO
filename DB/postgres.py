@@ -37,7 +37,27 @@ def install_services():
     except subprocess.CalledProcessError as e:
         print("Error en la instalación: ", e)
 
-# 2. Crear base de datos y usuario en PostgreSQL
+#Crear base de datos y usuario en PostgreSQL
+
+def setup_pg_hba():
+    hba_path = "/var/lib/pgsql/data/pg_hba.conf"
+    with open(hba_path, "r") as f:
+        pg_hba = f.readlines()
+    index = int()
+    for i in range(0,len(pg_hba)):
+        if "# \"local\" is for Unix domain socket connections only" in pg_hba[i]:
+            index = i
+            break
+    if index == 0:
+        print("Linea no encontrada")
+    else:    
+        f[index + 1] = "local   all             postgres                                md5"
+        f[index + 2] = "local   all             all                                     reject"
+        with open("/var/lib/pgsql/data/pg_hba.conf", "w") as f:
+            f.writelines(pg_hba)
+        print("Usuario borrado del archivo pg_hba.conf")
+
+
 def configure_postgresql(db_name, db_user, db_password):
     try:
         # Conectar a PostgreSQL como el usuario postgres
