@@ -58,7 +58,7 @@ def create_database_and_user(username, password):
     ]
 
     for comando in comandos:
-        if not subprocess.run(comando.split(" ")):
+        if not subprocess.run(comando.split("\n")):
             print(f"No se pudo crear base de datos o usuario para '{username}'.")
             return False
 
