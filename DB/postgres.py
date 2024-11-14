@@ -11,7 +11,7 @@ __all__ = [
     "configure_pg_hba",
     "create_home_directory",
     "connect_to_db",
-    "delete_database_and_user",
+    "delete_postgresql_database_and_user",
 ]
 
 
@@ -110,7 +110,7 @@ def connect_to_db(db_name, db_user, db_password):
     except Exception as e:
         print("Error connecting to the database: ", e)
 
-def delete_database_and_user(username):
+def delete_postgresql_database_and_user(username):
     try:
         conn = connect_to_db("postgres", "postgres", "postgres")
         cur = conn.cursor()

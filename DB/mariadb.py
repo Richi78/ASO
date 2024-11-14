@@ -5,7 +5,7 @@ __all__ = [
     "enable_mariadb",
     "secure_mariadb",
     "create_database_and_user",
-    "delete_database_and_user",
+    "delete_mariadb_database_and_user",
     "setup_mariadb"
 ]
 
@@ -73,7 +73,7 @@ def create_database_and_user(username, password):
     print(f"Base de datos y usuario '{username}' creados correctamente.")
     return True
 
-def delete_database_and_user(username):
+def delete_mariadb_database_and_user(username):
     """Eliminar la base de datos y usuario creados anteriormente."""
     print(f"Eliminando base de datos y usuario para '{username}'...")
 

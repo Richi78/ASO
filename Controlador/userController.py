@@ -3,8 +3,8 @@ from datetime import date
 import subprocess
 from Utils.utils import restartApache
 import psycopg2
-from DB.postgres import delete_database_and_user
-from DB.mariadb import delete_database_and_user
+from DB.postgres import delete_postgresql_database_and_user
+from DB.mariadb import delete_mariadb_database_and_user
 
 def addUserToJson(name, email, domain, db, diskQuote, passwd):
     today = date.today()
@@ -74,9 +74,9 @@ def deleteUser(user):
 
     # eliminar la base de datos
     if user["database"] == "MariaDB":
-        delete_database_and_user(user["name"])
+        delete_mariadb_database_and_user(user["name"])
     elif user["database"] == "PostgreSQL":
-        delete_database_and_user(user["name"])
+        delete_postgresql_database_and_user(user["name"])
 
    
     # return
