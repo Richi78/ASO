@@ -45,6 +45,7 @@ def secure_mariadb():
             print("No se pudo asegurar la instalacion de MariaDB.")
             return False
     print("MariaDB asegurado correctamente.")
+    
     return True
 
 def create_database_and_user(username, password):

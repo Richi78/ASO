@@ -17,7 +17,8 @@ class Gui:
         self.generalConfigs = [
             {"service": "Apache+PHP7", "action": installApache},
             {"service": "FTP", "action": installFTP}, 
-            {"service": "PostgreSQL", "action": installPostGreSQL}
+            {"service": "PostgreSQL", "action": installPostGreSQL},
+            {"service": "MariaDB", "action": setup_mariadb},
             ]
         
         self.userButtons = [
