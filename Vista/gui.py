@@ -30,6 +30,7 @@ class Gui:
         self.passwd = tk.StringVar(value="")
         self.userQuota = tk.StringVar(value="")
         self.userToDelete = tk.StringVar(value="")
+        self.userToUpdate = tk.StringVar(value="")
 
         # Widgets
         
@@ -358,8 +359,8 @@ class Gui:
 
     def handleUpdateUser(self):
         update_window = tk.Toplevel()
-        update_window.geometry("200x100")
-        update_window.title("Eliminar usuario")
+        update_window.geometry("300x400")
+        update_window.title("Editar usuario")
 
         label = tk.Label(
             update_window,
@@ -369,16 +370,108 @@ class Gui:
 
         entry = tk.Entry(
             update_window,
-            textvariable=self.userToDelete
+            textvariable=self.userToUpdate
             )
         entry.pack()
 
         button = tk.Button(
             update_window,
             text="Editar",
-            # command=lambda: confirm()
+            command=lambda: getInfo()
             )
         button.pack()
+
+        def getInfo():
+            inputText = self.userToUpdate.get()
+            user = getUserByName(inputText)
+            if not user:
+                messagebox.showerror(
+                    title="Error",
+                    message=f"El usuario no existe"
+                )
+                return
+            newName = tk.StringVar(value=user["name"])
+            newEmail = tk.StringVar(value=user["email"])
+            newDomain = tk.StringVar(value=user["domain"])
+            newPasswd = tk.StringVar(value=user["password"])
+            newDB = tk.StringVar(value=user["database"])
+            newQuote = tk.StringVar(value=user["diskQuote"])
+            entry.config(state="disabled")
+            button.config(state="disabled")
+            # editar nombre
+            label_Name = tk.Label(update_window, text="Nombre de usuario")
+            label_Name.pack()
+            entry_Name = tk.Entry(update_window, textvariable=newName)
+            entry_Name.pack()
+            
+            # editar correo
+            label_Email = tk.Label(update_window, text="Correo electronico")
+            label_Email.pack()
+            entry_Email = tk.Entry(update_window, textvariable=newEmail)
+            entry_Email.pack()
+            
+            # editar dominio
+            label_Domain = tk.Label(update_window, text="Dominio")
+            label_Domain.pack()
+            entry_Domain = tk.Entry(update_window, textvariable=newDomain)
+            entry_Domain.pack()
+    
+            # editar password
+            label_Passwd = tk.Label(update_window, text="Password")
+            label_Passwd.pack()
+            entry_Passwd = tk.Entry(update_window, textvariable=newPasswd)
+            entry_Passwd.pack()
+
+            # editar db
+            label_Db = tk.Label(update_window, text="Base de datos")
+            label_Db.pack()
+            cb_Db = ttk.Combobox(update_window, values=["PostgreSQL","MariaDB"], state="readonly")
+            cb_Db.set(newDB.get())
+            cb_Db.pack()
+            cb_Db.bind("<<ComboboxSelected>>", lambda e: selectDB(e))
+
+            # editar cuota
+            label_quote = tk.Label(update_window, text="Espacio de disco")
+            label_quote.pack()
+            cb_quote = ttk.Combobox(update_window, values=["200MB","500MB","1GB"], state="readonly")
+            cb_quote.set(newQuote.get())
+            cb_quote.pack()
+            cb_quote.bind("<<ComboboxSelected>>", lambda e: selectQuote(e))
+
+            # button accept
+            btn_accept = tk.Button(update_window, text="Guardar", command=lambda: accept())
+            btn_accept.pack()
+            # button cancel
+            btn_cancel = tk.Button(update_window, text="Cancelar", command=lambda: cancel())
+            btn_cancel.pack()
+
+            def selectDB(event):
+                newDB.set(cb_Db.get())
+            def selectQuote(event):
+                newQuote.set(cb_quote.get())
+            def accept():
+                result = messagebox.askyesno(
+                    title="Confirmacion",
+                    message="Estas seguro de modificar los datos?"
+                )
+                if result:
+                    # modificar aqui :D
+                    messagebox.showinfo(
+                        title="Exito",
+                        message="Se realizaron los cambios con exito."
+                    )
+                    update_window.destroy()
+
+            def cancel():
+                label_Name.destroy() ; entry_Name.destroy()
+                label_Email.destroy() ; entry_Email.destroy()
+                label_Domain.destroy() ; entry_Domain.destroy()
+                label_Passwd.destroy() ; entry_Passwd.destroy()
+                label_Db.destroy() ; cb_Db.destroy()
+                label_quote.destroy() ; cb_quote.destroy()
+                btn_accept.destroy() ; btn_cancel.destroy()
+                entry.config(state="normal") ; button.config(state="normal")
+
 
     def clearAllVariables(self):
         self.userName.set("")
