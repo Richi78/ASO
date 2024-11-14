@@ -41,7 +41,7 @@ def configure_postgresql(db_name, db_user, db_password):
     try:
         # Conectar a PostgreSQL como el usuario postgres
         subprocess.run(['sudo', 'service', 'postgresql', 'start'], check=True)
-        conn = psycopg2.connect(dbname="postgres", user="postgres")
+        conn = psycopg2.connect(dbname="postgres", user="postgres",password="postgres")
         conn.autocommit = True
         cur = conn.cursor()
 
@@ -68,16 +68,16 @@ def configure_pg_hba(db_name, db_user):
         lines = []
         # Abrir el archivo pg_hba.conf
         with open(hba_path, "r") as hba_file:
-            lines = file.readlines()
+            lines = hba_file.readlines()
         # Configurar la linea a insertarce en la configuracion
         new_line = f"{'local':<8}{db_user:<16}{db_name:<40}{'md5':<}"
         # Insertar la nueva linea
-        lines[85] = new_line + "\n" + lines[85]
+        lines[83] = new_line + "\n" + lines[83]
         # Guardar la configuracion
         with open(hba_path, "w") as hba_file:
             hba_file.writelines(lines)
         # Reiniciar el servicio postgresql
-        subprocess.run(['sudo', 'postgresql', 'restart'], check=True)
+        subprocess.run(['sudo', 'service','postgresql', 'restart'], check=True)
         print("Archivo pg_hba.conf configurado y PostgreSQL reiniciado.")
     except Exception as e:
         print("Error al configurar pg_hba.conf: ", e)
