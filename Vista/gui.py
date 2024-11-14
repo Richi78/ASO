@@ -364,7 +364,7 @@ class Gui:
 
     def handleUpdateUser(self):
         update_window = tk.Toplevel()
-        update_window.geometry("300x400")
+        update_window.geometry("300x350")
         update_window.title("Editar usuario")
 
         label = tk.Label(
@@ -428,12 +428,12 @@ class Gui:
             entry_Passwd.pack()
 
             # editar db
-            label_Db = tk.Label(update_window, text="Base de datos")
-            label_Db.pack()
-            cb_Db = ttk.Combobox(update_window, values=["PostgreSQL","MariaDB"], state="readonly")
-            cb_Db.set(newDB.get())
-            cb_Db.pack()
-            cb_Db.bind("<<ComboboxSelected>>", lambda e: selectDB(e))
+            # label_Db = tk.Label(update_window, text="Base de datos")
+            # label_Db.pack()
+            # cb_Db = ttk.Combobox(update_window, values=["PostgreSQL","MariaDB"], state="readonly")
+            # cb_Db.set(newDB.get())
+            # cb_Db.pack()
+            # cb_Db.bind("<<ComboboxSelected>>", lambda e: selectDB(e))
 
             # editar cuota
             label_quote = tk.Label(update_window, text="Espacio de disco")
@@ -472,7 +472,7 @@ class Gui:
                 label_Email.destroy() ; entry_Email.destroy()
                 label_Domain.destroy() ; entry_Domain.destroy()
                 label_Passwd.destroy() ; entry_Passwd.destroy()
-                label_Db.destroy() ; cb_Db.destroy()
+                # label_Db.destroy() ; cb_Db.destroy()
                 label_quote.destroy() ; cb_quote.destroy()
                 btn_accept.destroy() ; btn_cancel.destroy()
                 entry.config(state="normal") ; button.config(state="normal")
