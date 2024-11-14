@@ -51,13 +51,24 @@ def create_database_and_user(username, password):
     print(f"Creando base de datos y usuario para '{username}'...")
 
     # Crear la base de datos para el usuario
-    subprocess.run(f"sudo mysql -e \"CREATE DATABASE {username};\"")
-    # Crear el usuario para la base de datos
-    subprocess.run(f"sudo mysql -e \"CREATE USER '{username}'@'localhost' IDENTIFIED BY '{password}';\"")
-    # Asignar permisos al usuario sobre la base de datos
-    subprocess.run(f"sudo mysql -e \"GRANT ALL PRIVILEGES ON {username}.* TO '{username}'@'localhost';\"")
-    # Guardar los cambios en la configuraci n de MariaDB
-    subprocess.run("sudo mysql -e \"FLUSH PRIVILEGES;\"")
+    if subprocess.run(["sudo", "mysql", "-e", f"CREATE DATABASE {username};"]):
+        print(f"Base de datos '{username}' creada.")
+    else:
+        print(f"Error al crear la base de datos '{username}'.")
+        return False
+    if subprocess.run(["sudo", "mysql", "-e", f"CREATE USER '{username}'@'localhost' IDENTIFIED BY '{password}';"]):
+        print(f"Usuario '{username}' creado.")
+    else:
+        print(f"Error al crear el usuario '{username}'.")
+        return False
+    if subprocess.run(["sudo", "mysql", "-e", f"GRANT ALL PRIVILEGES ON {username}.* TO '{username}'@'localhost';"]):
+        print(f"Permisos asignados al usuario '{username}' sobre '{username}'.")
+    else:
+        print(f"Error al asignar permisos al usuario '{username}' sobre '{username}'.")
+        return False
+    if subprocess.run(["sudo", "mysql", "-e", "FLUSH PRIVILEGES;"]):
+        print("Cambios guardados en la configuraci n de MariaDB.")
+
     print(f"Base de datos y usuario '{username}' creados correctamente.")
     return True
 
