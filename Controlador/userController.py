@@ -3,6 +3,8 @@ from datetime import date
 import subprocess
 from Utils.utils import restartApache
 import psycopg2
+from DB.postgres import delete_database_and_user
+from DB.mariadb import delete_database_and_user
 
 def addUserToJson(name, email, domain, db, diskQuote, passwd):
     today = date.today()
@@ -70,43 +72,13 @@ def deleteUser(user):
     # reiniciar apache
     restartApache()
 
-    # conectar a la base de datos como postgres
-    subprocess.run(['sudo', 'service', 'postgresql', 'start'], check=True)
-    conn = psycopg2.connect(dbname="postgres", user="postgres",password="postgres")
-    conn.autocommit = True
-    cur = conn.cursor()
+    # eliminar la base de datos
+    if user["database"] == "MariaDB":
+        delete_database_and_user(user["name"])
+    elif user["database"] == "PostgreSQL":
+        delete_database_and_user(user["name"])
 
-    # eliminar de base de datos con nombre del usuario si existe
-    try:
-        cur.execute(sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(user["name"])))
-        print(f"Base de datos '{user["name"]}' eliminada.")
-    # eliminar usuario con nombre del usuario si existe
-        cur.execute(sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(user["name"])))
-        print(f"Usuario '{user["name"]}' eliminado.")
-    except:
-        pass
-
-    # cerrar conexion
-    cur.close()
-    conn.close()
-
-    #borrar de el archivo pg_hba.conf
-    hba_path = "/var/lib/pgsql/data/pg_hba.conf"
-    with open(hba_path, "r") as f:
-        pg_hba = f.readlines()
-    index = int()
-    for i in range(0,len(pg_hba)):
-        if f"local   {user["name"]}" in pg_hba[i]:
-            index = i
-            break
-    if index == 0:
-        print("User not found")
-    else:    
-        del pg_hba[index]
-        with open("/var/lib/pgsql/data/pg_hba.conf", "w") as f:
-            f.writelines(pg_hba)
-        print("Usuario borrado del archivo pg_hba.conf")
-
+   
     # return
     return {
         "status": 200,

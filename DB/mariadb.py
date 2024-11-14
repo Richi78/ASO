@@ -5,6 +5,7 @@ __all__ = [
     "enable_mariadb",
     "secure_mariadb",
     "create_database_and_user",
+    "delete_database_and_user",
     "setup_mariadb"
 ]
 

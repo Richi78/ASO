@@ -11,6 +11,7 @@ __all__ = [
     "configure_pg_hba",
     "create_home_directory",
     "connect_to_db",
+    "delete_database_and_user",
 ]
 
 
@@ -109,16 +110,33 @@ def connect_to_db(db_name, db_user, db_password):
     except Exception as e:
         print("Error connecting to the database: ", e)
 
-# Ejemplo de como utilizar
-# if __name__ == "__main__":
-    # Configuración inicial
-    # db_name = "nombre_de_tu_db"
-    # db_user = "nombre_usuario"
-    # db_password = "tu_contraseña"
+def delete_database_and_user(username):
+    try:
+        conn = connect_to_db("postgres", "postgres", "postgres")
+        cur = conn.cursor()
+        cur.execute(f"DROP DATABASE IF EXISTS {username};")
+        cur.execute(f"DROP USER IF EXISTS '{username}'@'localhost';")
+        cur.close() 
+        conn.close()
+        print("Database and user deleted successfully.")
+    except Exception as e:
+        print("Error deleting database and user: ", e)
+    delete_from_pg_hba(username)
 
-    # install_services()
-    # configure_postgresql(db_name, db_user, db_password)
-    # configure_pg_hba(db_name, db_user)
-    # create_home_directory(db_user)
 
-    # print("Configuración de PostgreSQL completada.")
+def delete_from_pg_hba(db_user):
+    hba_path = "/var/lib/pgsql/data/pg_hba.conf"
+    with open(hba_path, "r") as f:
+        pg_hba = f.readlines()
+    index = int()
+    for i in range(0,len(pg_hba)):
+        if f"local   {db_user}" in pg_hba[i]:
+            index = i
+            break
+    if index == 0:
+        print("User not found")
+    else:    
+        del pg_hba[index]
+        with open("/var/lib/pgsql/data/pg_hba.conf", "w") as f:
+            f.writelines(pg_hba)
+        print("Usuario borrado del archivo pg_hba.conf")
