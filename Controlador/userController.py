@@ -28,8 +28,47 @@ def addUserToJson(name, email, domain, db, diskQuote, passwd):
     with open("usersData.json.bk", 'w') as f:
         json.dump(jsonData, f, indent=2)
 
-def updateUser():
-    pass
+def updateUser(name, email, password, newdomain, quote, path, olddomain):
+    #update Json
+    with open("usersData.json", "r") as f:
+        jsonData = json.load(f)
+    usersList = jsonData["users"]
+    for i in range (0, len(usersList)):
+        if usersList[i]["name"] == name:
+            usersList[i]["email"] = email 
+            usersList[i]["password"] = password 
+            usersList[i]["domain"] = newdomain 
+            usersList[i]["diskQuote"] = quote
+            break
+    with open("usersData.json", "w") as f:
+        json.dump(jsonData, f, indent=2)
+    
+    configFile = f"{path.split("/")[-1]}.conf"
+
+    # update virtual host
+    with open(f"/etc/apache2/vhosts.d/{configFile}", 'r') as f:
+        content = f.readlines()
+    
+    for i in range (0,len(content)):
+        if "ServerAdmin" in content[i]: content[i] = f"ServerAdmin {email}\n"
+        if "ServerName" in content[i]: content[i] = f"ServerName {newdomain}\n"
+    
+    with open(f"/etc/apache2/vhosts.d/{configFile}", 'w') as f:
+        f.writelines(content)
+    
+    # update hosts
+    with open("/etc/hosts", "r") as f:
+        hosts = f.readlines()
+    
+    for i in range (0,len(hosts)):
+        if f"{olddomain}" in hosts[i]: 
+            hosts[i] = f"127.0.0.1\t{newdomain}\n"
+            break
+    with open("/etc/hosts", "w") as f:
+        f.writelines(hosts)
+        restartApache()
+
+    restartApache()
 
 def deleteUser(user):
 

@@ -6,7 +6,7 @@ from Controlador.generalConfigs import installApache,installFTP,installPostGreSQ
 from Utils.utils import generatePassword, createDirectoryWeb, verifyUser, createVirtualHost, restartApache, modifyHosts
 from DB.postgres import  configure_postgresql, configure_pg_hba,  connect_to_db
 from DB.mariadb import install_mariabd, enable_mariadb, secure_mariadb, create_database_and_user, setup_mariadb
-from Controlador.userController import addUserToJson, listUsers, getUserByName,deleteUser
+from Controlador.userController import addUserToJson, listUsers, getUserByName,deleteUser, updateUser
 
 class Gui:
     def __init__(self, master) -> None:
@@ -364,7 +364,7 @@ class Gui:
 
     def handleUpdateUser(self):
         update_window = tk.Toplevel()
-        update_window.geometry("300x350")
+        update_window.geometry("280x300")
         update_window.title("Editar usuario")
 
         label = tk.Label(
@@ -403,11 +403,6 @@ class Gui:
             newQuote = tk.StringVar(value=user["diskQuote"])
             entry.config(state="disabled")
             button.config(state="disabled")
-            # editar nombre
-            label_Name = tk.Label(update_window, text="Nombre de usuario")
-            label_Name.pack()
-            entry_Name = tk.Entry(update_window, textvariable=newName)
-            entry_Name.pack()
             
             # editar correo
             label_Email = tk.Label(update_window, text="Correo electronico")
@@ -427,14 +422,6 @@ class Gui:
             entry_Passwd = tk.Entry(update_window, textvariable=newPasswd)
             entry_Passwd.pack()
 
-            # editar db
-            # label_Db = tk.Label(update_window, text="Base de datos")
-            # label_Db.pack()
-            # cb_Db = ttk.Combobox(update_window, values=["PostgreSQL","MariaDB"], state="readonly")
-            # cb_Db.set(newDB.get())
-            # cb_Db.pack()
-            # cb_Db.bind("<<ComboboxSelected>>", lambda e: selectDB(e))
-
             # editar cuota
             label_quote = tk.Label(update_window, text="Espacio de disco")
             label_quote.pack()
@@ -450,8 +437,6 @@ class Gui:
             btn_cancel = tk.Button(update_window, text="Cancelar", command=lambda: cancel())
             btn_cancel.pack()
 
-            def selectDB(event):
-                newDB.set(cb_Db.get())
             def selectQuote(event):
                 newQuote.set(cb_quote.get())
             def accept():
@@ -461,6 +446,16 @@ class Gui:
                 )
                 if result:
                     # modificar aqui :D
+                    updateUser(
+                        name=user["name"], 
+                        email=newEmail.get(),
+                        password=newPasswd.get(), 
+                        newdomain=newDomain.get(), 
+                        quote=newQuote.get(),
+                        path=user["path"],
+                        olddomain=user["domain"]
+                        )
+                    restartApache()
                     messagebox.showinfo(
                         title="Exito",
                         message="Se realizaron los cambios con exito."
@@ -468,11 +463,9 @@ class Gui:
                     update_window.destroy()
 
             def cancel():
-                label_Name.destroy() ; entry_Name.destroy()
                 label_Email.destroy() ; entry_Email.destroy()
                 label_Domain.destroy() ; entry_Domain.destroy()
                 label_Passwd.destroy() ; entry_Passwd.destroy()
-                # label_Db.destroy() ; cb_Db.destroy()
                 label_quote.destroy() ; cb_quote.destroy()
                 btn_accept.destroy() ; btn_cancel.destroy()
                 entry.config(state="normal") ; button.config(state="normal")
