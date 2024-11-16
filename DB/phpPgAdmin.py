@@ -40,6 +40,8 @@ def installAndConfigurePhpPgAdmin():
     if index != 0:
         lines[index] = lines[index] + "\n"+"    Require all granted\n"
 
+    lines[0] = "Alias /phpPgAdmin /srv/www/htdocs/phpPgAdmin\n"
+
     with open('/etc/apache2/conf.d/phpMyAdmin.conf', 'w') as f:
         f.writelines(lines)
     print ("archivo phpMyAdmin.conf modificado")
@@ -83,6 +85,8 @@ def installAndConfigurePhpMyAdmin():
             break
     if index != 0:
         lines[index] = lines[index] + "\n"+"    Require all granted\n"
+
+    lines[0] = "Alias /phpMyAdmin /srv/www/htdocs/phpMyAdmin\n"
 
     with open('/etc/apache2/conf.d/phpMyAdmin.conf', 'w') as f:
         f.writelines(lines)
