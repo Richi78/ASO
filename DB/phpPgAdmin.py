@@ -50,3 +50,43 @@ def installAndConfigurePhpPgAdmin():
     print("phpPgAdmin configurado")
 
 
+def installAndConfigurePhpMyAdmin():
+    subprocess.run(['sudo', 'zypper', 'install', 'phpMyAdmin'], check=True)
+    
+    with open('/etc/phpMyAdmin/config.inc.php', 'r+') as f:
+        lines = f.readlines()
+    index1 = 0
+    index2 = 0
+    for i, line in enumerate(lines):
+        if '        // use \'localhost\' for TCP/IP connection on this computer' in lines[i]:
+            index1 = i
+        if '        $cfg[\'Servers\'][$i][\'extension\'] = \'mysqli\';' in lines[i]:
+            index2 = i
+        
+    if index1 != 0:
+        lines[index1 + 1] = "$cfg['Servers'][$i]['host'] = 'localhost';" + "\n"
+
+    if index2 != 0:
+        lines[index2 + 1] = "$cfg['Servers'][$i]['extension'] = 'mariadb';" + "\n"
+        
+    with open('/etc/phpMyAdmin/config.inc.php', 'w') as f:
+        f.writelines(lines)
+    print ("archivo config.inc.php modificado")
+
+    with open('/etc/apache2/conf.d/phpMyAdmin.conf', 'r+') as f:
+        lines = f.readlines()
+    
+    index = 0
+    for i, line in enumerate(lines):
+        if '<Directory "/srv/www/htdocs/phpMyAdmin">' in line:
+            index = i
+            break
+    if index != 0:
+        lines[index] = lines[index] + "\n"+"    Require all granted\n"
+
+    with open('/etc/apache2/conf.d/phpMyAdmin.conf', 'w') as f:
+        f.writelines(lines)
+    print ("archivo phpMyAdmin.conf modificado")
+
+    subprocess.run(['sudo', 'service', 'apache2', 'restart'], check=True)
+    print("phpMyAdmin configurado")
