@@ -1,20 +1,13 @@
 import subprocess
-import tkinter as tk
-from tkinter import messagebox
 
-def establecerCuota(usuario, block_suave, block_duro, inode_suave, inode_duro,sistema_de_archivos="/"):
+#para formato ext4
+#pasar como parametros:
+#nombre del usuario y la cuota de disco en KB
+def addQuota(userName,QuotaKB):
     try:
-        subprocess.run([
-            "edquota","-u",str(usuario),str(block_suave),
-            str(inode_suave),str(inode_duro),
-            sistema_de_archivos
-        ], check=True)
-        messagebox(
-            title = "",
-            message = "La cuota a sido creada exitosamente"
-        )
+        cmd = ["setquota",str(userName),"0",str(QuotaKB),"0","0","/mnt/lvm01"]
+        subprocess.run(cmd, check=True)
+        print("Configurado")
+
     except subprocess.CalledProcessError as e:
-        messagebox.showerror(
-            title = "Error",
-            message="Algo salio mal"
-        )
+        print ("error")
