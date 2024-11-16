@@ -11,7 +11,8 @@ def whoami() -> str:
     return iam.stdout.strip()
 
 def generatePassword() -> str:
-    characters = string.ascii_letters + string.digits + string.punctuation
+    specialChar = "@/?\|[]!)()="
+    characters = string.ascii_letters + string.digits + specialChar
     password = ''.join(random.choice(characters) for _ in range(16))
     return password
 
@@ -57,7 +58,7 @@ def createVirtualHost(name, email, domain):
         f.write("UseCanonicalName Off\n")
         f.write("ServerSignature On\n")
         f.write(f"<Directory '/srv/www/htdocs/{dirname}'>\n")
-        f.write("AllowOverride All\n")
+        f.write("AllowOverride None\n")
         f.write("Require all granted\n")
         f.write("</Directory>\n")
         f.write("</VirtualHost>\n")
