@@ -61,7 +61,32 @@ def conf_ftp():
             f.writelines(vsftpd)
 
         print("Líneas reemplazadas correctamente en el archivo vsftpd.conf.")
+
+        # Crear el archivo vsftpd.chroot_list
+        with open("/etc/vsftpd.chroot_list", "w") as f:
+            f.write("root\n")
+
+        subprocess.run(['service', 'vsftpd', 'restart'], check=True)
+
+        print("archivo /etc/vsftpd.chroot_list creada y Servicio vsftpd reiniciado.")
+
     except FileNotFoundError:
         print(f"Archivo no encontrado: {vsftpdFile}")
     except Exception as e:
         print(f"Ocurrió un error: {e}")
+
+
+def add_user(username, password):
+    today = date.today()
+    #Agregar usuario
+    dirname = f"/srv/www/htdocs/{today.day}{today.month}{today.year}_{username}"
+    subprocess.run(['useradd', '-d', f'/srv/www/htdocs/{dirname}', '-M', username], check=True)
+    subprocess.run(['passwd', username], input=f"{password}\n{password}\n", text=True, check=True)
+
+    # agregar usuario al archivo vsftpd.chroot_list
+    with open('/etc/vsftpd.chroot_list', 'a') as f:
+        f.write(f"{username}\n")
+
+    # agregar usuario al archivo vsftpd.conf
+    with open('/etc/vsftpd.conf', 'a') as f:
+        f.write(f"userlist_enable=YES\n")
