@@ -56,21 +56,47 @@ def setup_postresql():
 
 def setup_pg_hba():
     hba_path = "/var/lib/pgsql/data/pg_hba.conf"
-    with open(hba_path, "r") as f:
-        pg_hba = f.readlines()
-    index = int()
-    for i in range(0,len(pg_hba)):
-        if "# \"local\" is for Unix domain socket connections only" in pg_hba[i]:
-            index = i
-            break
-    if index == 0:
-        print("Linea no encontrada")
-    else:    
-        f[index + 1] = "local   all             postgres                                md5"
-        f[index + 2] = "local   all             all                                     reject"
-        with open("/var/lib/pgsql/data/pg_hba.conf", "w") as f:
+    try:
+        # Leer el archivo línea por línea
+        with open(hba_path, "r") as f:
+            pg_hba = f.readlines()
+        
+        # Buscar la línea de referencia y realizar los reemplazos
+        index = -1
+        index_host = -1
+        index_ipv6 = -1
+        for i in range(len(pg_hba)):
+            if "# \"local\" is for Unix domain socket connections only" in pg_hba[i]:
+                index = i
+            if "host    all             all             ::1/128                 peer" in pg_hba[i]:
+                index_ipv6 = i
+            if "host    all             all             127.0.0.1/32            peer" in pg_hba[i]:
+                index_host = i
+        
+        if index == -1:
+            print("Línea no encontrada.")
+            return
+        
+        # Reemplazar las líneas después de la línea encontrada
+        if index + 1 < len(pg_hba):
+            pg_hba[index + 1] = "local   all             postgres                                md5\n"
+        if index + 2 < len(pg_hba):
+            pg_hba[index + 2] = "local   all             all                                     reject\n"
+        if index_host + 1 < len(pg_hba):
+            pg_hba[index_host] = "host    all             all             127.0.0.1/32            md5\n"
+        if index_ipv6 + 1 < len(pg_hba):
+            pg_hba[index_ipv6] = "host    all             all             ::1/128                 md5\n"
+        # Escribir los cambios en el archivo
+        with open(hba_path, "w") as f:
             f.writelines(pg_hba)
-        print("Usuario borrado del archivo pg_hba.conf")
+        
+        print("Líneas reemplazadas correctamente en el archivo pg_hba.conf.")
+    
+    except FileNotFoundError:
+        print(f"Archivo no encontrado: {hba_path}")
+    except Exception as e:
+        print(f"Ocurrió un error: {e}")
+
 
 
 def configure_postgresql(db_name, db_user, db_password):
@@ -82,8 +108,8 @@ def configure_postgresql(db_name, db_user, db_password):
         cur = conn.cursor()
 
         # Crear base de datos y usuario con permisos limitados
-        cur.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(db_name)))
         cur.execute(sql.SQL("CREATE USER {} WITH ENCRYPTED PASSWORD %s").format(sql.Identifier(db_user)), [db_password])
+        cur.execute(sql.SQL("CREATE DATABASE {} OWNER {}").format(sql.Identifier(db_name), sql.Identifier(db_user)))
         cur.execute(sql.SQL("GRANT ALL PRIVILEGES ON DATABASE {} TO {}").format(sql.Identifier(db_name), sql.Identifier(db_user)))
 
         # Restricciones de acceso a otras bases de datos
@@ -106,7 +132,7 @@ def configure_pg_hba(db_name, db_user):
         with open(hba_path, "r") as hba_file:
             lines = hba_file.readlines()
         # Configurar la linea a insertarce en la configuracion
-        new_line = f"{'local':<8}{db_user:<16}{db_name:<40}{'md5':<}"
+        new_line = f"{'local':<8}{db_user:<16}{db_name:<40}{'md5'}"
         # Insertar la nueva linea
         lines[83] = new_line + "\n" + lines[83]
         # Guardar la configuracion
@@ -182,3 +208,12 @@ def delete_from_pg_hba(db_user):
         with open("/var/lib/pgsql/data/pg_hba.conf", "w") as f:
             f.writelines(pg_hba)
         print("Usuario borrado del archivo pg_hba.conf")
+
+
+def editPassword(user, newPassword):
+    conn = connect_to_db(user["name"], user["name"], user["password"])
+    cur = conn.cursor()
+    cur.execute(sql.SQL("ALTER USER {} WITH PASSWORD '{}';").format(sql.Identifier(user["name"]), sql.Identifier(newPassword)))
+    cur.close()
+    conn.close()
+    print("Password changed successfully.")

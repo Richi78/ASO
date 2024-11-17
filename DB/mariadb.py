@@ -1,13 +1,16 @@
 import subprocess
-
+from DB.phpAdmin import installAndConfigurePhpMyAdmin
 __all__ = [
     "install_mariabd",
     "enable_mariadb",
     "secure_mariadb",
     "create_database_and_user",
     "delete_mariadb_database_and_user",
-    "setup_mariadb"
+    "setup_mariadb",
+    "edit_mariadb_password"
 ]
+
+
 
 
 def install_mariabd():
@@ -58,7 +61,7 @@ def create_database_and_user(username, password):
     else:
         print(f"Error al crear la base de datos '{username}'.")
         return False
-    if subprocess.run(["sudo", "mysql", "-e", f"CREATE USER '{username}'@'localhost' IDENTIFIED BY '{password}';"]):
+    if subprocess.run(["sudo", "mysql", "-e", f"CREATE USER '{username}'@'{username}' IDENTIFIED BY '{password}';"]):
         print(f"Usuario '{username}' creado.")
     else:
         print(f"Error al crear el usuario '{username}'.")
@@ -83,7 +86,7 @@ def delete_mariadb_database_and_user(username):
     else:
         print(f"Error al eliminar la base de datos '{username}'.")
         return False
-    if subprocess.run(["sudo", "mysql", "-e", f"DROP USER IF EXISTS '{username}'@'localhost';"]):
+    if subprocess.run(["sudo", "mysql", "-e", f"DROP USER IF EXISTS '{username}'@'{username}';"]):
         print(f"Usuario '{username}' eliminado.")
     else:
         print(f"Error al eliminar el usuario '{username}'.")
@@ -103,6 +106,14 @@ def setup_mariadb():
         return
     if not secure_mariadb():
         return
+    if not installAndConfigurePhpMyAdmin():
+        return
     print("Configuracion de MariaDB completada correctamente.")
 
 
+def edit_mariadb_password(username, new_password):
+    print(f"Editando la contraseña del usuario '{username}' en MariaDB...")
+    if not subprocess.run(["sudo", "mysql", "-e", f"ALTER USER '{username}'@'localhost' IDENTIFIED BY '{new_password}';"]):
+        print(f"Contraseña del usuario '{username}' editada correctamente.")
+    else:
+        print(f"Error al editar la contraseña del usuario '{username}'.")

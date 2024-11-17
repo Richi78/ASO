@@ -7,6 +7,7 @@ from Utils.utils import generatePassword, createDirectoryWeb, verifyUser, create
 from DB.postgres import  configure_postgresql, configure_pg_hba,  connect_to_db
 from DB.mariadb import install_mariabd, enable_mariadb, secure_mariadb, create_database_and_user, setup_mariadb
 from Controlador.userController import addUserToJson, listUsers, getUserByName,deleteUser, updateUser
+from FTP.ftp import add_ftp_user
 
 class Gui:
     def __init__(self, master) -> None:
@@ -276,6 +277,8 @@ class Gui:
         createVirtualHost(name=name, email=email, domain=domain)
         modifyHosts(domain=domain)
         restartApache()
+        add_ftp_user(username=name,password=passwd)        
+
         if db == "MariaDB":
             create_database_and_user(username=name, password=passwd)
         else:

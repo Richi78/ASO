@@ -26,33 +26,6 @@
       "path": "/srv/www/htdocs/16112024_richi",
       "database": "PostgreSQL",
       "diskQuote": "500MB"
-    },
-    {
-      "name": "maria",
-      "email": "maria@maria",
-      "domain": "maria.com",
-      "password": ")XrVqoRoXXimCv11",
-      "path": "/srv/www/htdocs/16112024_maria",
-      "database": "MariaDB",
-      "diskQuote": "200MB"
-    },
-    {
-      "name": "kevin ",
-      "email": "kevin@kevin.aso",
-      "domain": "kevin.aso",
-      "password": "QUr!gtDMn\\Z@6mUe",
-      "path": "/srv/www/htdocs/16112024_kevin ",
-      "database": "PostgreSQL",
-      "diskQuote": "200MB"
-    },
-    {
-      "name": "jaja",
-      "email": "jaja.jaja",
-      "domain": "jaja.jaja",
-      "password": "ug38i19wFus|reXB",
-      "path": "/srv/www/htdocs/16112024_jaja",
-      "database": "PostgreSQL",
-      "diskQuote": "200MB"
     }
   ]
 }
