@@ -21,11 +21,20 @@
     {
       "name": "richi",
       "email": "richi@richi.com",
-      "domain": "richi.com",
+      "domain": "ricardo.aso",
       "password": "uak1BKJUx!HwKjEm",
       "path": "/srv/www/htdocs/16112024_richi",
       "database": "PostgreSQL",
       "diskQuote": "500MB"
+    },
+    {
+      "name": "robert",
+      "email": "trebor-81@hotmail.com",
+      "domain": "a",
+      "password": "/ym81BbUSmMYtstP",
+      "path": "/srv/www/htdocs/17112024_robert",
+      "database": "PostgreSQL",
+      "diskQuote": "200MB"
     }
   ]
 }
