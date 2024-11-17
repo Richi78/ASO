@@ -93,7 +93,7 @@ def add_user(username, password):
         f.write(f"{username}\n")
 
 
-def delete_user(username):
+def delete_ftp_user(username):
     subprocess.run(['userdel', username], check=True)
 
     with open('/etc/vsftpd.chroot_list', 'r') as f:
