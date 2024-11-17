@@ -80,7 +80,7 @@ def conf_ftp():
         print(f"Ocurrió un error: {e}")
 
 
-def add_user(username, password):
+def add_ftp_user(username, password):
     today = date.today()
     #Agregar usuario
     dirname = f"/srv/www/htdocs/{today.day}{today.month}{today.year}_{username}"
