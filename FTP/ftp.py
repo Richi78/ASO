@@ -1,3 +1,6 @@
+from datetime import date
+import subprocess
+
 
 __all__ = ['conf_ftp', 'add_user']
 
@@ -81,9 +84,14 @@ def add_user(username, password):
     today = date.today()
     #Agregar usuario
     dirname = f"/srv/www/htdocs/{today.day}{today.month}{today.year}_{username}"
-    subprocess.run(['useradd', '-d', f'/srv/www/htdocs/{dirname}', '-M', username], check=True)
+    subprocess.run(['useradd', '-d', f'{dirname}', '-M', username], check=True)
     subprocess.run(['passwd', username], input=f"{password}\n{password}\n", text=True, check=True)
 
     # agregar usuario al archivo vsftpd.chroot_list
     with open('/etc/vsftpd.chroot_list', 'a') as f:
         f.write(f"{username}\n")
+
+
+def delete_user(username):
+    subprocess.run(['userdel', username], check=True)
+    subprocess.run(['rm', '-rf', f'/etc/vsftpd.chroot_list'], check=True)

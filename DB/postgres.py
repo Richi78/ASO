@@ -208,3 +208,12 @@ def delete_from_pg_hba(db_user):
         with open("/var/lib/pgsql/data/pg_hba.conf", "w") as f:
             f.writelines(pg_hba)
         print("Usuario borrado del archivo pg_hba.conf")
+
+
+def editPassword(user, newPassword):
+    conn = connect_to_db(user["name"], user["name"], user["password"])
+    cur = conn.cursor()
+    cur.execute(sql.SQL("ALTER USER {} WITH PASSWORD '{}';").format(sql.Identifier(user["name"]), sql.Identifier(newPassword)))
+    cur.close()
+    conn.close()
+    print("Password changed successfully.")
