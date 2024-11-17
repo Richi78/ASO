@@ -1,7 +1,8 @@
 import subprocess
 from tkinter import messagebox
 from DB.postgres import setup_postresql,setup_pg_hba
-
+from DB.phpAdmin import installAndConfigurePhpPgAdmin,installAndConfigurePhpMyAdmin
+from FTP.ftp import conf_ftp
 def installApache():
     isInstalled = validateService('apache2')
     if isInstalled:
@@ -66,6 +67,8 @@ def installFTP():
     else:
         messagebox.showinfo(title="Mensaje", message="El servicio FTP ya esta instalado.")
         print("El servicio FTP ya esta instalado")
+    if not conf_ftp():
+        print("FTP ya existe")
 
 def installPostGreSQL():
     isInstalled = validateService('postgresql')
@@ -92,6 +95,7 @@ def installPostGreSQL():
         
         setup_postresql()
         setup_pg_hba()
+        installAndConfigurePhpPgAdmin()
     else:
         print("El servicio PostgreSQL ya esta instalado")
         messagebox.showinfo(title="Mensaje", message="El servicio PostgreSQL ya esta instalado.")

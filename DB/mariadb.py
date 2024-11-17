@@ -1,4 +1,5 @@
 import subprocess
+from phpAdmin import installAndConfigurePhpMyAdmin
 
 __all__ = [
     "install_mariabd",
@@ -8,6 +9,8 @@ __all__ = [
     "delete_mariadb_database_and_user",
     "setup_mariadb"
 ]
+
+
 
 
 def install_mariabd():
@@ -102,6 +105,8 @@ def setup_mariadb():
     if not enable_mariadb():
         return
     if not secure_mariadb():
+        return
+    if not installAndConfigurePhpMyAdmin():
         return
     print("Configuracion de MariaDB completada correctamente.")
 

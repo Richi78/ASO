@@ -1,4 +1,10 @@
 
+__all__ = [
+    "installAndConfigurePhpPgAdmin",
+    "installAndConfigurePhpMyAdmin"
+]
+
+
 def installAndConfigurePhpPgAdmin():
     subprocess.run(['sudo', 'zypper', 'install', 'phpPgAdmin'], check=True)
 
@@ -74,3 +80,5 @@ def installAndConfigurePhpMyAdmin():
 
     subprocess.run(['sudo', 'service', 'apache2', 'restart'], check=True)
     print("phpMyAdmin configurado")
+
+

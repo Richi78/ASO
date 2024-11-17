@@ -1,4 +1,5 @@
 
+__all__ = ['conf_ftp', 'add_user']
 
 def conf_ftp():
     vsftpdFile = '/etc/vsftpd.conf'
@@ -86,7 +87,3 @@ def add_user(username, password):
     # agregar usuario al archivo vsftpd.chroot_list
     with open('/etc/vsftpd.chroot_list', 'a') as f:
         f.write(f"{username}\n")
-
-    # agregar usuario al archivo vsftpd.conf
-    with open('/etc/vsftpd.conf', 'a') as f:
-        f.write(f"userlist_enable=YES\n")

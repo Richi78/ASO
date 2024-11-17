@@ -108,8 +108,8 @@ def configure_postgresql(db_name, db_user, db_password):
         cur = conn.cursor()
 
         # Crear base de datos y usuario con permisos limitados
-        cur.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(db_name)))
         cur.execute(sql.SQL("CREATE USER {} WITH ENCRYPTED PASSWORD %s").format(sql.Identifier(db_user)), [db_password])
+        cur.execute(sql.SQL("CREATE DATABASE {} OWNER {}").format(sql.Identifier(db_name), sql.Identifier(db_user)))
         cur.execute(sql.SQL("GRANT ALL PRIVILEGES ON DATABASE {} TO {}").format(sql.Identifier(db_name), sql.Identifier(db_user)))
 
         # Restricciones de acceso a otras bases de datos
