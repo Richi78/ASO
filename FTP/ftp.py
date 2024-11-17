@@ -88,9 +88,7 @@ def add_ftp_user(username, password):
     subprocess.run(['passwd', username], input=f"{password}\n{password}\n", text=True, check=True)
     #Quitar acceso por shell
     subprocess.run(['sudo', 'usermod', '-s', '/bin/false', username])
-    # agregar usuario al archivo vsftpd.chroot_list
-    with open('/etc/vsftpd.chroot_list', 'a') as f:
-        f.write(f"{username}\n")
+
 
 
 def delete_ftp_user(username):
