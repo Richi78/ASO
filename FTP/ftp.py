@@ -86,7 +86,8 @@ def add_user(username, password):
     dirname = f"/srv/www/htdocs/{today.day}{today.month}{today.year}_{username}"
     subprocess.run(['useradd', '-d', f'{dirname}', '-M', username], check=True)
     subprocess.run(['passwd', username], input=f"{password}\n{password}\n", text=True, check=True)
-
+    #Quitar acceso por shell
+    subprocess.run(['sudo', 'usermod', '-s', '/usr/sbin/nologin', username])
     # agregar usuario al archivo vsftpd.chroot_list
     with open('/etc/vsftpd.chroot_list', 'a') as f:
         f.write(f"{username}\n")
@@ -105,3 +106,7 @@ def delete_user(username):
 
     with open('/etc/vsftpd.chroot_list', 'w') as f:
         f.writelines(lines)
+
+
+def edit_ftp_user(username, new_password):
+    subprocess.run(['passwd', username], input=f"{new_password}\n{new_password}\n", text=True, check=True)
