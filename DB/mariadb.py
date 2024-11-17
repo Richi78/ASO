@@ -1,6 +1,5 @@
 import subprocess
-from phpAdmin import installAndConfigurePhpMyAdmin
-
+from DB.phpAdmin import installAndConfigurePhpMyAdmin
 __all__ = [
     "install_mariabd",
     "enable_mariadb",
