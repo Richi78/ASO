@@ -58,7 +58,7 @@ def createVirtualHost(name, email, domain):
         f.write("UseCanonicalName Off\n")
         f.write("ServerSignature On\n")
         f.write(f"<Directory '/srv/www/htdocs/{dirname}'>\n")
-        f.write("AllowOverride None\n")
+        f.write("AllowOverride All\n")
         f.write("Require all granted\n")
         f.write("</Directory>\n")
         f.write("</VirtualHost>\n")
