@@ -94,4 +94,14 @@ def add_user(username, password):
 
 def delete_user(username):
     subprocess.run(['userdel', username], check=True)
-    subprocess.run(['rm', '-rf', f'/etc/vsftpd.chroot_list'], check=True)
+
+    with open('/etc/vsftpd.chroot_list', 'r') as f:
+        lines = f.readlines()
+
+    for i, line in enumerate(lines):
+        if line.strip() == username:
+            del lines[i]
+            break
+
+    with open('/etc/vsftpd.chroot_list', 'w') as f:
+        f.writelines(lines)
