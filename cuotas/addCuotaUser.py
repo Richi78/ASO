@@ -1,13 +1,18 @@
 import subprocess
+import argparse
 
-#para formato ext4
-#pasar como parametros:
-#nombre del usuario y la cuota de disco en KB
-def addQuota(userName,QuotaKB):
+
+parser = argparse.ArgumentParser()
+parser.add_argument("nombre",type=str)
+parser.add_argument("cuota",type=int)
+
+def crearCuota(parametros = parser.parse_args()):
     try:
-        cmd = ["setquota",str(userName),"0",str(QuotaKB),"0","0","/mnt/lvm01"]
-        subprocess.run(cmd, check=True)
-        print("Configurado")
+#        cmd = ["btrfs","subvolume","create","/srv/www/htdocs/"+str(userName)]
+        cmd2 = ["btrfs","qgroup","limit",str(parametros.cuota)+"M","/srv/www/htdocs/"+parametros.nombre]
+        subprocess.run(cmd2,check=True)
+        print("cuota editado/creado")
 
     except subprocess.CalledProcessError as e:
-        print ("error")
+        print("error")
+crearCuota()
