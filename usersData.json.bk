@@ -35,6 +35,15 @@
       "path": "/srv/www/htdocs/17112024_robert",
       "database": "PostgreSQL",
       "diskQuote": "200MB"
+    },
+    {
+      "name": "robertAP",
+      "email": "d-82@hotmail.com",
+      "domain": "d",
+      "password": "V[Jfj7MwQQxHMVZ\\",
+      "path": "/srv/www/htdocs/17112024_robertAP",
+      "database": "PostgreSQL",
+      "diskQuote": "200MB"
     }
   ]
 }
