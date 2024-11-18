@@ -26,6 +26,7 @@
       "path": "/srv/www/htdocs/16112024_richi",
       "database": "PostgreSQL",
       "diskQuote": "500MB"
+<<<<<<< HEAD
     },
     {
       "name": "robert",
@@ -44,6 +45,8 @@
       "path": "/srv/www/htdocs/17112024_robertAP",
       "database": "PostgreSQL",
       "diskQuote": "200MB"
+=======
+>>>>>>> 2f80eaab6590bc1e95e020c1d47fcd8090cbfab6
     }
   ]
 }

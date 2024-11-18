@@ -6,7 +6,8 @@ __all__ = [
     "secure_mariadb",
     "create_database_and_user",
     "delete_mariadb_database_and_user",
-    "setup_mariadb"
+    "setup_mariadb",
+    "edit_mariadb_password"
 ]
 
 
@@ -60,7 +61,7 @@ def create_database_and_user(username, password):
     else:
         print(f"Error al crear la base de datos '{username}'.")
         return False
-    if subprocess.run(["sudo", "mysql", "-e", f"CREATE USER '{username}'@'{username}' IDENTIFIED BY '{password}';"]):
+    if subprocess.run(["sudo", "mysql", "-e", f"CREATE USER '{username}'@'localhost' IDENTIFIED BY '{password}';"]):
         print(f"Usuario '{username}' creado.")
     else:
         print(f"Error al crear el usuario '{username}'.")
@@ -85,7 +86,7 @@ def delete_mariadb_database_and_user(username):
     else:
         print(f"Error al eliminar la base de datos '{username}'.")
         return False
-    if subprocess.run(["sudo", "mysql", "-e", f"DROP USER IF EXISTS '{username}'@'{username}';"]):
+    if subprocess.run(["sudo", "mysql", "-e", f"DROP USER IF EXISTS '{username}'@'localhost';"]):
         print(f"Usuario '{username}' eliminado.")
     else:
         print(f"Error al eliminar el usuario '{username}'.")

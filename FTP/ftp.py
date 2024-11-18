@@ -2,7 +2,7 @@ from datetime import date
 import subprocess
 
 
-__all__ = ['conf_ftp', 'add_user']
+__all__ = ['conf_ftp', 'add_ftp_user']
 
 def conf_ftp():
     vsftpdFile = '/etc/vsftpd.conf'
@@ -80,17 +80,15 @@ def conf_ftp():
         print(f"Ocurrió un error: {e}")
 
 
-def add_user(username, password):
+def add_ftp_user(username, password):
     today = date.today()
     #Agregar usuario
     dirname = f"/srv/www/htdocs/{today.day}{today.month}{today.year}_{username}"
     subprocess.run(['useradd', '-d', f'{dirname}', '-M', username], check=True)
     subprocess.run(['passwd', username], input=f"{password}\n{password}\n", text=True, check=True)
     #Quitar acceso por shell
-    subprocess.run(['sudo', 'usermod', '-s', '/usr/sbin/nologin', username])
-    # agregar usuario al archivo vsftpd.chroot_list
-    with open('/etc/vsftpd.chroot_list', 'a') as f:
-        f.write(f"{username}\n")
+    subprocess.run(['sudo', 'usermod', '-s', '/bin/false', username])
+
 
 
 def delete_ftp_user(username):
