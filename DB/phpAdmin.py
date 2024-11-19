@@ -41,13 +41,13 @@ def installAndConfigurePhpPgAdmin():
     with open('/etc/apache2/conf.d/phpPgAdmin.conf', 'r+') as f:
         lines = f.readlines()
     
-    index = 0
-    for i, line in enumerate(lines):
+    index = -1
+    for i in range( len(lines)):
         
-        if '<Directory /srv/www/htdocs/phpPgAdmin>' in line:
+        if '<Directory /srv/www/htdocs/phpPgAdmin>' in lines[i]:
             index = i
             break
-    if index != 0:
+    if index != -1:
         lines[index] = lines[index] + "\n"+"    Require all granted\n"
 
     lines[0] = "Alias /phpPgAdmin /srv/www/htdocs/phpPgAdmin\n" + lines[0]
@@ -68,12 +68,12 @@ def installAndConfigurePhpMyAdmin():
     with open('/etc/apache2/conf.d/phpMyAdmin.conf', 'r+') as f:
         lines = f.readlines()
     
-    index = 0
-    for i, line in enumerate(lines):
-        if '<Directory /srv/www/htdocs/phpMyAdmin>' in line:
+    index = -1
+    for i in range( len(lines)):
+        if '<Directory /srv/www/htdocs/phpMyAdmin>' in lines[i]:
             index = i
             break
-    if index != 0:
+    if index != -1:
         lines[index] = lines[index] + "\n"+"    Require all granted\n"
 
     lines[0] = "Alias /phpMyAdmin /srv/www/htdocs/phpMyAdmin\n" + lines[0]
