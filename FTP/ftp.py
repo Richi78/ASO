@@ -21,10 +21,10 @@ def conf_ftp():
         index_chroot_list_file = -1
         index_allow_writeable_enable = -1
         for i in range(len(vsftpd)):
-            if "local_enable=NO" in vsftpd[i]:
-                index_local_enable = i
             if "write_enable=NO" in vsftpd[i]:
                 index_write_enable = i
+            if "local_enable=NO" in vsftpd[i]:
+                index_local_enable = i
             if "#chroot_local_user=YES" in vsftpd[i]:
                 index_chroot_local_user = i
             if "#chroot_list_enable=YES" in vsftpd[i]:
@@ -35,12 +35,11 @@ def conf_ftp():
                 index_allow_writeable_enable = i
             if "#chroot_list_file=/etc/vsftpd.chroot_list" in vsftpd[i]:
                 index_chroot_list_file = i
-                break
 
         if index_local_enable == -1:
             print("Línea no encontrada.")
-            return
 
+        
         # Reemplazar las líneas después de la línea encontrada
         print(index_allow_writeable_enable,"we")
         if index_local_enable != -1:
