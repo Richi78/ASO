@@ -33,7 +33,7 @@ def install_services():
     try:
         # Instalar PostgreSQL y Apache
         subprocess.run(['sudo', 'zypper', 'refresh'], check=True)
-        subprocess.run(['sudo', 'zypper', 'install', 'postgresql-server', 'postgresql'], check=True)
+        subprocess.run(['sudo', 'zypper', 'install', '-y', 'postgresql-server', 'postgresql'], check=True)
         subprocess.run(['sudo', 'service', 'postgresql', 'start'], check=True)
 
         print("PostgreSQL instalado.")
