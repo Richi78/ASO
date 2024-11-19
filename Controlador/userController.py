@@ -67,7 +67,6 @@ def updateUser(name, email, password, newdomain, quote, path, olddomain,db):
             break
     with open("/etc/hosts", "w") as f:
         f.writelines(hosts)
-        restartApache()
     
     #update ftp
     edit_ftp_user(name, password)

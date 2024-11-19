@@ -459,7 +459,6 @@ class Gui:
                         olddomain=user["domain"],
                         db=user["database"]
                         )
-                    restartApache()
                     messagebox.showinfo(
                         title="Exito",
                         message="Se realizaron los cambios con exito."

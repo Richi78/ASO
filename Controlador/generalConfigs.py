@@ -24,6 +24,9 @@ def installApache():
             subprocess.run(
                 ["service","apache2","start"]
             )
+            subprocess.run(
+                ["systemctl","enable","apache2.service"]
+            )
             messagebox.showinfo(
                 title="Confirmacion", 
                 message="El servicio Apache se ha instalado correctamente."
