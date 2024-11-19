@@ -34,4 +34,5 @@ Ejecutar el archivo singleton.py como si fuera un binario.
 ```
 ## Otros
 En caso de que el host sea una nueva máquina y no tiene instalado las dependencias necesarioas, puede realizarlo con los botones en la parte superior.
+
 ![image](https://github.com/user-attachments/assets/95f3a523-b460-4614-a043-433deca8323b)
