@@ -55,6 +55,8 @@ def installFTP():
             )
             print("Puerto 21 abierto")
             # iniciar servicio
+
+            conf_ftp()
             subprocess.run(
                 ['service', 'vsftpd','start']
             )          
@@ -67,8 +69,6 @@ def installFTP():
     else:
         messagebox.showinfo(title="Mensaje", message="El servicio FTP ya esta instalado.")
         print("El servicio FTP ya esta instalado")
-    if not conf_ftp():
-        print("FTP ya existe")
 
 def installPostGreSQL():
     isInstalled = validateService('postgresql')
