@@ -29,7 +29,7 @@ def addUserToJson(name, email, domain, db, diskQuote, passwd):
     with open("usersData.json.bk", 'w') as f:
         json.dump(jsonData, f, indent=2)
 
-def updateUser(name, email, password, newdomain, quote, path, olddomain):
+def updateUser(name, email, password, newdomain, quote, path, olddomain,db):
     #update Json
     with open("usersData.json", "r") as f:
         jsonData = json.load(f)
@@ -73,7 +73,7 @@ def updateUser(name, email, password, newdomain, quote, path, olddomain):
     edit_ftp_user(name, password)
 
     #update db
-    if jsonData["users"]["database"] == "MariaDB":
+    if  db == "MariaDB":
         edit_mariadb_password(name, password)
     else:
         editPassword(name, password)

@@ -456,7 +456,8 @@ class Gui:
                         newdomain=newDomain.get(), 
                         quote=newQuote.get(),
                         path=user["path"],
-                        olddomain=user["domain"]
+                        olddomain=user["domain"],
+                        db=user["database"]
                         )
                     restartApache()
                     messagebox.showinfo(
