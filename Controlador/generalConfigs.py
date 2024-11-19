@@ -82,10 +82,16 @@ def installPostGreSQL():
             print("stdout: ", result.stdout)
             print("stderr: ", result.stderr)
             
+
+            setup_postresql()
+            setup_pg_hba()
+            installAndConfigurePhpPgAdmin()
+
             #iniciar servicio
             subprocess.run(
                 ["service","postgresql","start"]
             )
+
             messagebox.showinfo(
                 title="Confirmacion", 
                 message="El servicio PostgreSQL y phpPgAdmin se han instalado correctamente."
@@ -93,9 +99,7 @@ def installPostGreSQL():
         except subprocess.CalledProcessError as e:
             print("Error al instalar PostgreSQL:", e)
         
-        setup_postresql()
-        setup_pg_hba()
-        installAndConfigurePhpPgAdmin()
+        
     else:
         print("El servicio PostgreSQL ya esta instalado")
         messagebox.showinfo(title="Mensaje", message="El servicio PostgreSQL ya esta instalado.")
