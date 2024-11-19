@@ -15,7 +15,7 @@ def installAndConfigurePhpPgAdmin():
     index1 = 0
     index2 = 0
     index3 = 0
-    for i, line in range(0, len(lines)):
+    for i in range( len(lines)):
         if '        // use \'localhost\' for TCP/IP connection on this computer' in lines[i]:
             index1 = i
         if '        $conf[\'extra_login_security\'] = true;' in lines[i]:
