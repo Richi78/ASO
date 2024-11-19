@@ -12,25 +12,25 @@ def installAndConfigurePhpPgAdmin():
 
     with open('/etc/phpPgAdmin/config.inc.php', 'r+') as f:
         lines = f.readlines()
-    index1 = 0
-    index2 = 0
-    index3 = 0
+    index1 = -1
+    index2 = -1
+    index3 = -1
     for i in range( len(lines)):
-        if '        // use \'localhost\' for TCP/IP connection on this computer' in lines[i]:
+        if "$conf['servers'][0]['host'] = '';" in lines[i]:
             index1 = i
-        if '        $conf[\'extra_login_security\'] = true;' in lines[i]:
+        if "$conf['extra_login_security'] = true;" in lines[i]:
            index2 = i
-        if '        $conf[\'owned_only\'] = false;' in lines[i]:
+        if "$conf['owned_only'] = false;" in lines[i]:
             index3 = i
         
-    if index1 != 0:
-        lines[index1 + 1] = "$conf['servers'][0]['host'] = 'localhost';" + "\n"
+    if index1 != -1:
+        lines[index1 ] = "        $conf['servers'][0]['host'] = 'localhost';" + "\n"
 
-    if index2 != 0:
-        lines[index2 + 1] = "$conf['extra_login_security'] = false;" + "\n"
+    if index2 != -1:
+        lines[index2] = "        $conf['extra_login_security'] = false;" + "\n"
 
-    if index3 != 0:
-        lines[index3 + 1] = "$conf['owned_only'] = true;" + "\n" 
+    if index3 != -1:
+        lines[index3] = "        $conf['owned_only'] = true;" + "\n" 
         
     with open('/etc/phpPgAdmin/config.inc.php', 'w') as f:
         f.writelines(lines)
@@ -42,7 +42,8 @@ def installAndConfigurePhpPgAdmin():
     
     index = 0
     for i, line in enumerate(lines):
-        if '<Directory "/srv/www/htdocs/phpPgAdmin">' in line:
+        
+        if '<Directory /srv/www/htdocs/phpPgAdmin>' in line:
             index = i
             break
     if index != 0:
@@ -68,7 +69,7 @@ def installAndConfigurePhpMyAdmin():
     
     index = 0
     for i, line in enumerate(lines):
-        if '<Directory "/srv/www/htdocs/phpMyAdmin">' in line:
+        if '<Directory /srv/www/htdocs/phpMyAdmin>' in line:
             index = i
             break
     if index != 0:
