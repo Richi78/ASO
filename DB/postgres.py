@@ -48,7 +48,7 @@ def setup_postresql():
 
         # Ejecuta un comando psql como usuario postgres para cambiar la contraseña
         subprocess.run(
-            ["sudo", "-u", "postgres", "psql", "-d","postgres","-c", "\"ALTER USER postgres PASSWORD 'postgres';\""],
+            ["sudo", "-u", "postgres", "psql", "-d","postgres","-c", "ALTER USER postgres PASSWORD 'postgres';"],
             check=True
         )
         print("Contraseña de postgrescambiada exitosamente.")
