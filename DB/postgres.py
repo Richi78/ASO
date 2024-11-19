@@ -1,3 +1,4 @@
+import os
 import subprocess
 import psycopg2
 from psycopg2 import sql
@@ -171,16 +172,16 @@ def connect_to_db(db_name, db_user, db_password):
     except Exception as e:
         print("Error connecting to the database: ", e)
 
-def delete_postgresql_database_and_user(username):
+def delete_postgresql_database_and_user(user):
     try:
         conn = connect_to_db("postgres", "postgres", "postgres")
         conn.autocommit = True
         cur = conn.cursor()
         try:
-            cur.execute(sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(username)))
+            cur.execute(sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(user["name"])))
             print(f"Base de datos '{user["name"]}' eliminada.")
             # eliminar usuario con nombre del usuario si existe
-            cur.execute(sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(username)))
+            cur.execute(sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(user["name"])))
             print(f"Usuario '{user["name"]}' eliminado.")
         except:
             pass
@@ -189,7 +190,7 @@ def delete_postgresql_database_and_user(username):
         print("Database and user deleted successfully.")
     except Exception as e:
         print("Error deleting database and user: ", e)
-    delete_from_pg_hba(username)
+    delete_from_pg_hba(user["name"])
 
 
 def delete_from_pg_hba(db_user):

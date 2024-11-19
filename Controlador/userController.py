@@ -3,9 +3,9 @@ from datetime import date
 import subprocess
 from Utils.utils import restartApache
 import psycopg2
-from DB.postgres import delete_postgresql_database_and_user
-from DB.mariadb import delete_mariadb_database_and_user
-from FTP.ftp import delete_ftp_user
+from DB.postgres import delete_postgresql_database_and_user,editPassword
+from DB.mariadb import delete_mariadb_database_and_user,edit_mariadb_password
+from FTP.ftp import delete_ftp_user,edit_ftp_user
 
 def addUserToJson(name, email, domain, db, diskQuote, passwd):
     today = date.today()
@@ -74,9 +74,9 @@ def updateUser(name, email, password, newdomain, quote, path, olddomain):
 
     #update db
     if jsonData["users"][i]["database"] == "MariaDB":
-        edit_mariadb_database_and_user(name, password)
+        edit_mariadb_password(name, password)
     else:
-        edit_postgresql_database_and_user(name, password)
+        editPassword(name, password)
     
 
     restartApache()
@@ -127,9 +127,9 @@ def deleteUser(user):
 
     # eliminar la base de datos
     if user["database"] == "MariaDB":
-        delete_mariadb_database_and_user(user["name"])
+        delete_mariadb_database_and_user(user)
     elif user["database"] == "PostgreSQL":
-        delete_postgresql_database_and_user(user["name"])
+        delete_postgresql_database_and_user(user)
 
    
     # return
