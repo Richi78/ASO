@@ -109,14 +109,11 @@ def setup_mariadb():
         return
 
     print("Iniciando el proceso de configuracion de MariaDB...")
-    if not install_mariabd():
-        return
-    if not enable_mariadb():
-        return
-    if not secure_mariadb():
-        return
-    if not installAndConfigurePhpMyAdmin():
-        return
+    install_mariabd()
+    enable_mariadb()
+    secure_mariadb()
+    installAndConfigurePhpMyAdmin()
+  
     print("Configuracion de MariaDB completada correctamente.")
     messagebox.showinfo(
                 title="Confirmacion", 
