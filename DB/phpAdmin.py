@@ -37,7 +37,7 @@ def installAndConfigurePhpPgAdmin():
     print ("archivo config.inc.php modificado")
 
    
-    with open('/etc/apache2/conf.d/phpMyAdmin.conf', 'r+') as f:
+    with open('/etc/apache2/conf.d/phpPgAdmin.conf', 'r+') as f:
         lines = f.readlines()
     
     index = 0
@@ -50,9 +50,9 @@ def installAndConfigurePhpPgAdmin():
 
     lines[0] = "Alias /phpPgAdmin /srv/www/htdocs/phpPgAdmin\n" + lines[0]
 
-    with open('/etc/apache2/conf.d/phpMyAdmin.conf', 'w') as f:
+    with open('/etc/apache2/conf.d/phpPgAdmin.conf', 'w') as f:
         f.writelines(lines)
-    print ("archivo phpMyAdmin.conf modificado")
+    print ("archivo phpPgAdmin.conf modificado")
 
     subprocess.run(['sudo', 'service', 'postgresql', 'reload'], check=True)
     subprocess.run(['sudo', 'service', 'postgresql', 'restart'], check=True)
