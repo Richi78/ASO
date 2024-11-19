@@ -45,7 +45,7 @@ def install_services():
 def setup_postresql():
     try:
         subprocess.run(['sudo', 'service', 'postgresql', 'start'], check=True)
-        conn = psycopg2.connect(dbname="postgres", user="postgres")
+        conn = psycopg2.connect(dbname="postgres", user="postgres", host="localhost", password=None)
         conn.autocommit = True
         cur = conn.cursor()
         cur.execute("ALTER USER postgres PASSWORD 'postgres';")
@@ -80,9 +80,7 @@ def setup_pg_hba():
         
         # Reemplazar las líneas después de la línea encontrada
         if index + 1 < len(pg_hba):
-            pg_hba[index + 1] = "local   all             postgres                                md5\n"
-        if index + 2 < len(pg_hba):
-            pg_hba[index + 2] = "local   all             all                                     reject\n"
+            pg_hba[index + 1] = "local   all             postgres                                md5\n" + "local   all             all                                     reject\n"
         if index_host + 1 < len(pg_hba):
             pg_hba[index_host] = "host    all             all             127.0.0.1/32            md5\n"
         if index_ipv6 + 1 < len(pg_hba):
