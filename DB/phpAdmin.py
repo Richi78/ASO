@@ -1,4 +1,6 @@
 
+import subprocess
+
 __all__ = [
     "installAndConfigurePhpPgAdmin",
     "installAndConfigurePhpMyAdmin"
