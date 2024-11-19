@@ -9,22 +9,30 @@ Proyecto de aplicación de sistemas operativos
 
 2. Verificar versión de python
 ```
-python --version
+python3 --version
 ```
 
 ## Instalar las dependencias
 ```
 pip3 install -r requirements.txt
 ```
+Tambien puede utilizar un entorno virtual de python, instalación de las dependencias es lo mismo.
 ## Ejecutar el programa
-Se lo debe realizar en modo root (con privilegios), puede ejecutarlo de dos maneras.
-1. En el directorio donde se encuentra el proyecto ejecutar  
+Se lo debe realizar en modo root (con privilegios).
+1. En el directorio donde se encuentra el proyecto ejecutar. 
   ```
   python3 singleton.py
   ```
+2. Otra alternativa.
+Dar permisos de ejecución al file singleton.py.
+```
+chmod 777 singleton.py
+```
+Ejecutar el archivo singleton.py como si fuera un binario.
+```
+./singleton.py
+```
+## Otros
+En caso de que el host sea una nueva máquina y no tiene instalado las dependencias necesarias, puede realizarlo con los botones en la parte superior.
 
-  - Linux
-  ```
-  source venv/bin/activate
-  ```
-2. Puedes verificar la versión de python de tu entorno virtual para asegurarte que siga siendo la versión 3.12.7
+![image](https://github.com/user-attachments/assets/95f3a523-b460-4614-a043-433deca8323b)
