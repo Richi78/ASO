@@ -1,5 +1,6 @@
 
 import subprocess
+from tkinter import messagebox
 
 __all__ = [
     "installAndConfigurePhpPgAdmin",
