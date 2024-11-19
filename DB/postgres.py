@@ -32,8 +32,7 @@ def check_postgresql_installed():
 def install_services():
     try:
         # Instalar PostgreSQL y Apache
-        subprocess.run(['sudo', 'zypper', 'refresh'], check=True)
-        subprocess.run(['sudo', 'zypper', 'install', '-y', 'postgresql-server', 'postgresql'], check=True)
+        subprocess.run(['sudo', 'zypper', 'install', '-y','postgresql-server', 'postgresql'], check=True)
         subprocess.run(['sudo', 'service', 'postgresql', 'start'], check=True)
 
         print("PostgreSQL instalado.")
@@ -44,9 +43,12 @@ def install_services():
 
 def setup_postresql():
     try:
+        # Iniciar el servicio de PostgreSQL
+        subprocess.run(['sudo', 'service', 'postgresql', 'start'], check=True)
+
         # Ejecuta un comando psql como usuario postgres para cambiar la contraseña
         subprocess.run(
-            ["sudo", "-u", "postgres", "psql", "-c", "ALTER USER postgres PASSWORD 'postgres';"],
+            ["sudo", "-u", "postgres", "psql", "-d","postgres","-c", "\"ALTER USER postgres PASSWORD 'postgres';\""],
             check=True
         )
         print("Contraseña de postgrescambiada exitosamente.")
