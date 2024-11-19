@@ -73,7 +73,7 @@ def updateUser(name, email, password, newdomain, quote, path, olddomain):
     edit_ftp_user(name, password)
 
     #update db
-    if jsonData["users"][i]["database"] == "MariaDB":
+    if jsonData["users"]["database"] == "MariaDB":
         edit_mariadb_password(name, password)
     else:
         editPassword(name, password)
