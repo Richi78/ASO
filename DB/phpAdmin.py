@@ -8,7 +8,7 @@ __all__ = [
 
 
 def installAndConfigurePhpPgAdmin():
-    subprocess.run(['sudo', 'zypper', 'install', 'phpPgAdmin'], check=True)
+    subprocess.run(['sudo', 'zypper', 'install', '-y', 'phpPgAdmin'], check=True)
 
     with open('/etc/phpPgAdmin/config.inc.php', 'r+') as f:
         lines = f.readlines()
@@ -62,7 +62,7 @@ def installAndConfigurePhpPgAdmin():
 
 
 def installAndConfigurePhpMyAdmin():
-    subprocess.run(['sudo', 'zypper', 'install', 'phpMyAdmin'], check=True)
+    subprocess.run(['sudo', 'zypper', 'install', '-y', 'phpMyAdmin'], check=True)
 
     with open('/etc/apache2/conf.d/phpMyAdmin.conf', 'r+') as f:
         lines = f.readlines()
