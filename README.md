@@ -32,7 +32,28 @@ Ejecutar el archivo singleton.py como si fuera un binario.
 ```
 ./singleton.py
 ```
-## Otros
+## Guía de uso
 En caso de que el host sea una nueva máquina y no tiene instalado las dependencias necesarias, puede realizarlo con los botones en la parte superior.
 
 ![image](https://github.com/user-attachments/assets/95f3a523-b460-4614-a043-433deca8323b)
+
+### Crear nuevo usario
+Todos los campos son obligatorios.
+
+![image](https://github.com/user-attachments/assets/7b8a1b6b-bfcc-4dd5-a77c-22228fab4b06)
+
+### Listar usuarios
+Al presionar el boton Listar usuarios sale una ventana con los usuarios existentes.
+
+![image](https://github.com/user-attachments/assets/36e28825-b355-4eb4-8636-71b55410ef46)
+
+### Editar usuarios
+Al presionar Editar usuario sale una ventana donde podrá poner el nombre del usuario que desea editar, presionar el boton Editar y realizar los cambios correspondientes.
+
+![image](https://github.com/user-attachments/assets/128a090e-2bcd-43b5-8518-c36818fb9a4c)
+
+### Eliminar usuario
+Al presionar Eliminar usuario sale una ventana donde podrá poner el nombre del usuario que desea eliminar, presiona eliminar y debe confirmar su acción. 
+
+![image](https://github.com/user-attachments/assets/7c64186e-5646-4180-89df-944def6459f2)
+
