@@ -10,7 +10,7 @@ from Vista.gui import Gui
 if __name__ == "__main__":
     iam = whoami()
     if iam == "root": 
-        print("Tas bien :D jaja, aqui viene la interfaz que esta en desarrollo")
+        print("Iniciando administrador HostingWeb")
         root = tk.Tk()
         my_gui = Gui(root)
         root.title('Proyecto ASO')

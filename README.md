@@ -1,9 +1,9 @@
-# ASO
+# Administrador Hosting Web - ASO
 Proyecto de aplicación de sistemas operativos
 
 ## Descargar Python
 
-1. Descargar el instalador de la página oficial
+1. Descargar e instalar Python de la página oficial
 
 [Descargar Python 3.12](https://www.python.org/downloads/release/python-3127/)
 
@@ -12,15 +12,15 @@ Proyecto de aplicación de sistemas operativos
 python --version
 ```
 
-## Crear entorno virtual de python 
+## Instalar las dependencias
 ```
-python -m venv venv
+pip3 install -r requirements.txt
 ```
-1. Para activar el entorno virtual 
-
-  - Windows
+## Ejecutar el programa
+Se lo debe realizar en modo root (con privilegios), puede ejecutarlo de dos maneras.
+1. En el directorio donde se encuentra el proyecto ejecutar  
   ```
-  .\venv\Scripts\activate
+  python3 singleton.py
   ```
 
   - Linux
