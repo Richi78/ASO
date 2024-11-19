@@ -21,7 +21,7 @@ def install_mariabd():
         print("MariaDB ya esta instalado.")
     else:
         print("Instalando MariaDB...")
-        if not subprocess.run(["sudo", "zypper", "refresh", "&&", "sudo", "zypper", "install", "-y", "mariadb-server"]):
+        if not subprocess.run(["zypper", "install", "-y", "mariadb-server"]):
             print("No se pudo instalar MariaDB.")
             return False
         print("MariaDB instalado correctamente.")
