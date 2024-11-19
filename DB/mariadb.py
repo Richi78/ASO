@@ -100,6 +100,14 @@ def delete_mariadb_database_and_user(username):
 
 def setup_mariadb():
     """Proceso de configuracion completo para MariaDB."""
+    isInstalled = isPhpMyAdminInstalled() 
+    if "phpMyAdmin" in isInstalled:
+        messagebox.showinfo(
+                title="Mensaje", 
+                message="El servicio MariaDB y PHPMyAdmin ya estan instalados."
+                )
+        return
+
     print("Iniciando el proceso de configuracion de MariaDB...")
     if not install_mariabd():
         return
@@ -123,3 +131,11 @@ def edit_mariadb_password(username, new_password):
     else:
         print(f"Error al editar la contraseña del usuario '{username}'.")
     
+def isPhpMyAdminInstalled():
+    result = subprocess.run(
+        ["rpm -qa | grep phpMyAdmin"],
+        shell=True,
+        text=True,
+        capture_output=True
+    )
+    return result.stdout
