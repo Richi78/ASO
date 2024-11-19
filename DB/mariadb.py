@@ -1,4 +1,5 @@
 import subprocess
+from tkinter import messagebox
 from DB.phpAdmin import installAndConfigurePhpMyAdmin
 __all__ = [
     "install_mariabd",
@@ -109,6 +110,10 @@ def setup_mariadb():
     if not installAndConfigurePhpMyAdmin():
         return
     print("Configuracion de MariaDB completada correctamente.")
+    messagebox.showinfo(
+                title="Confirmacion", 
+                message="El servicio MariaDB y PHPMyAdmin se han instalado correctamente."
+                )
 
 
 def edit_mariadb_password(username, new_password):

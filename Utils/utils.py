@@ -11,7 +11,7 @@ def whoami() -> str:
     return iam.stdout.strip()
 
 def generatePassword() -> str:
-    specialChar = "@/?\|[]!)()="
+    specialChar = "@/?|[]!)()="
     characters = string.ascii_letters + string.digits + specialChar
     password = ''.join(random.choice(characters) for _ in range(16))
     return password

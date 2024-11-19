@@ -88,7 +88,7 @@ def installPostGreSQL():
             )
             messagebox.showinfo(
                 title="Confirmacion", 
-                message="El servicio PostgreSQL se ha instalado correctamente."
+                message="El servicio PostgreSQL y phpPgAdmin se han instalado correctamente."
                 )
         except subprocess.CalledProcessError as e:
             print("Error al instalar PostgreSQL:", e)
