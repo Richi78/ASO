@@ -212,7 +212,7 @@ def delete_from_pg_hba(db_user):
 
 
 def editPassword(user, newPassword):
-    conn = connect_to_db(user["name"], user["name"], user["password"])
+    conn = connect_to_db('postgres', 'postgres', 'postgres')
     cur = conn.cursor()
     cur.execute(sql.SQL("ALTER USER {} WITH PASSWORD '{}';").format(sql.Identifier(user["name"]), sql.Identifier(newPassword)))
     cur.close()

@@ -118,7 +118,8 @@ def setup_mariadb():
 
 def edit_mariadb_password(username, new_password):
     print(f"Editando la contraseña del usuario '{username}' en MariaDB...")
-    if not subprocess.run(["sudo", "mysql", "-e", f"ALTER USER '{username}'@'localhost' IDENTIFIED BY '{new_password}';"]):
+    if subprocess.run(["sudo", "mysql", "-e", f"ALTER USER '{username}'@'localhost' IDENTIFIED BY '{new_password}';"]):
         print(f"Contraseña del usuario '{username}' editada correctamente.")
     else:
         print(f"Error al editar la contraseña del usuario '{username}'.")
+    
