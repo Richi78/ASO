@@ -39,9 +39,8 @@ def conf_ftp():
         if index_local_enable == -1:
             print("Línea no encontrada.")
 
-        
+
         # Reemplazar las líneas después de la línea encontrada
-        print(index_allow_writeable_enable,"we")
         if index_local_enable != -1:
             vsftpd[index_local_enable] = "local_enable=YES\n"
         if index_write_enable != -1:

@@ -44,15 +44,14 @@ def install_services():
 
 def setup_postresql():
     try:
-        subprocess.run(['sudo', 'service', 'postgresql', 'start'], check=True)
-        conn = psycopg2.connect(dbname="postgres", user="postgres", host="localhost", password=None)
-        conn.autocommit = True
-        cur = conn.cursor()
-        cur.execute("ALTER USER postgres PASSWORD 'postgres';")
-        cur.close()
-        conn.close()
-    except Exception as e:
-        print("Error en la configuración de PostgreSQL: ", e)
+        # Ejecuta un comando psql como usuario postgres para cambiar la contraseña
+        subprocess.run(
+            ["sudo", "-u", "postgres", "psql", "-c", "ALTER USER postgres PASSWORD 'postgres';"],
+            check=True
+        )
+        print("Contraseña de postgrescambiada exitosamente.")
+    except subprocess.CalledProcessError as e:
+        print("Error al cambiar la contraseña de postgres:", e)
  
 
 def setup_pg_hba():
