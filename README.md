@@ -9,7 +9,7 @@ Proyecto de aplicación de sistemas operativos
 
 2. Verificar versión de python
 ```
-python --version
+python3 --version
 ```
 
 ## Instalar las dependencias
