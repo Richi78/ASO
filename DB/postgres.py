@@ -68,9 +68,9 @@ def setup_pg_hba():
         for i in range(len(pg_hba)):
             if "# \"local\" is for Unix domain socket connections only" in pg_hba[i]:
                 index = i
-            if "host    all             all             ::1/128                 peer" in pg_hba[i]:
+            if "host    all             all             ::1/128                 ident" in pg_hba[i]:
                 index_ipv6 = i
-            if "host    all             all             127.0.0.1/32            peer" in pg_hba[i]:
+            if "host    all             all             127.0.0.1/32            ident" in pg_hba[i]:
                 index_host = i
         
         if index == -1:
@@ -80,9 +80,9 @@ def setup_pg_hba():
         # Reemplazar las líneas después de la línea encontrada
         if index + 1 < len(pg_hba):
             pg_hba[index + 1] = "local   all             postgres                                md5\n" + "local   all             all                                     reject\n"
-        if index_host + 1 < len(pg_hba):
+        if index_host != -1:
             pg_hba[index_host] = "host    all             all             127.0.0.1/32            md5\n"
-        if index_ipv6 + 1 < len(pg_hba):
+        if index_ipv6 != -1:
             pg_hba[index_ipv6] = "host    all             all             ::1/128                 md5\n"
         # Escribir los cambios en el archivo
         with open(hba_path, "w") as f:
