@@ -26,6 +26,27 @@
       "path": "/srv/www/htdocs/16112024_richi",
       "database": "PostgreSQL",
       "diskQuote": "500MB"
+<<<<<<< HEAD
+    },
+    {
+      "name": "robert",
+      "email": "trebor-81@hotmail.com",
+      "domain": "a",
+      "password": "/ym81BbUSmMYtstP",
+      "path": "/srv/www/htdocs/17112024_robert",
+      "database": "PostgreSQL",
+      "diskQuote": "200MB"
+    },
+    {
+      "name": "robertAP",
+      "email": "d-82@hotmail.com",
+      "domain": "d",
+      "password": "V[Jfj7MwQQxHMVZ\\",
+      "path": "/srv/www/htdocs/17112024_robertAP",
+      "database": "PostgreSQL",
+      "diskQuote": "200MB"
+=======
+>>>>>>> 2f80eaab6590bc1e95e020c1d47fcd8090cbfab6
     }
   ]
 }
