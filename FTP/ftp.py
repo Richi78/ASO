@@ -86,7 +86,7 @@ def add_ftp_user(username, password):
     subprocess.run(['passwd', username], input=f"{password}\n{password}\n", text=True, check=True)
     #Quitar acceso por shell
     subprocess.run(
-        ['sudo', 'chown', '-R', f'{username}:users', f'/srv/www/htdocs/{dirname}']
+        ['sudo', 'chown', '-R', f'{username}:users', dirname]
     )
     subprocess.run(['sudo', 'usermod', '-s', '/bin/false', username])
 
