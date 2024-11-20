@@ -24,7 +24,7 @@ def conf_ftp():
         for i in range(len(vsftpd)):
             if "write_enable=NO" in vsftpd[i]:
                 index_write_enable = i
-            if "local_umask=022" in vsftpd[i]:
+            if "#local_umask=022" in vsftpd[i]:
                 index_umask = i
             if "local_enable=NO" in vsftpd[i]:
                 index_local_enable = i
@@ -49,7 +49,7 @@ def conf_ftp():
         if index_write_enable != -1:
             vsftpd[index_write_enable] = "write_enable=YES\n"
         if index_umask != -1:
-            vsftpd[index_umask] = "local_umask=022\n"
+            vsftpd[index_umask] = "local_umask=000\n"
         if index_chroot_local_user != -1:
             vsftpd[index_chroot_local_user] = "chroot_local_user=YES\n"
         if index_chroot_list_enable != -1:
