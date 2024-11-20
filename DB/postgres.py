@@ -215,7 +215,10 @@ def edit_postgres_password(user, newPassword):
     print(f"Editando la contraseña del usuario '{user}' en PostgreSQL... y contrasenia: {newPassword}")
     conn = connect_to_db('postgres', 'postgres', 'postgres')
     cur = conn.cursor()
-    cur.execute(sql.SQL("ALTER USER {} WITH PASSWORD '{}';").format(sql.Identifier(user), sql.Literal(newPassword)))
-    cur.close()
+    try:
+        cur.execute(sql.SQL("ALTER USER {} WITH PASSWORD '{}';").format(sql.Identifier(user), sql.Literal(newPassword)))
+        cur.close()
+    except:
+        print("Error al editar la contraseña del usuario en PostgreSQL.")
     conn.close()
     print("Password changed successfully.")
