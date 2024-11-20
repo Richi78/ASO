@@ -89,7 +89,7 @@ def add_ftp_user(username, password):
         ['sudo', 'chown', '-R', f'{username}:users', dirname]
     )
     subprocess.run(
-        ['sudo', 'chmod', '-R', '755', dirname],check=True
+        ['sudo', 'chmod', '-R', '755', dirname]
     )
     subprocess.run(['sudo', 'usermod', '-s', '/bin/false', username])
     subprocess.run(['service','vsftpd','restart'], check=True)
