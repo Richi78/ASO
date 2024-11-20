@@ -3,6 +3,7 @@ from datetime import date
 import subprocess
 from Utils.utils import restartApache
 import psycopg2
+import pexpect
 from DB.postgres import delete_postgresql_database_and_user,edit_postgres_password
 from DB.mariadb import delete_mariadb_database_and_user,edit_mariadb_password
 from FTP.ftp import delete_ftp_user,edit_ftp_user
@@ -56,6 +57,9 @@ def updateUser(name, email, password, newdomain, quote, path, olddomain,db):
     
     with open(f"/etc/apache2/vhosts.d/{configFile}", 'w') as f:
         f.writelines(content)
+
+    # update htpasswd
+    addUserToHtpasswd(name=name, password=password)
     
     # update hosts
     with open("/etc/hosts", "r") as f:
@@ -105,6 +109,9 @@ def deleteUser(user):
     with open("/etc/hosts", "w") as f:
         f.writelines(hostsData)
 
+    # eliminar del htpasswd
+    removeUserFromHtpasswd(name=user["name"])
+
     # eliminar del json
 
     with open("usersData.json", "r") as f:
@@ -152,3 +159,18 @@ def getUserByName(name):
     else:
         return {}
     
+def addUserToHtpasswd(name, password):
+    process = pexpect.spawn(f"htpasswd2 /etc/apache2/.htpasswd {name}")
+
+    process.expect("New password:")
+    process.sendline(password)
+
+    process.expect("Re-type new password:")
+    process.sendline(password)
+
+    process.expect(pexpect.EOF)
+    
+def removeUserFromHtpasswd(name):
+    subprocess.run(
+        ["htpasswd2","-D","/etc/apache2/.htpasswd",name]
+    )

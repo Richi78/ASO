@@ -19,6 +19,9 @@ def installApache():
                 ['/usr/sbin/a2enmod', 'php7']
             )
             subprocess.run(
+                ['touch','/etc/apache2/.htpasswd']
+            )
+            subprocess.run(
                 ['a2enmod', 'version']
             )
             subprocess.run(

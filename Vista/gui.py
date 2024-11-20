@@ -6,7 +6,7 @@ from Controlador.generalConfigs import installApache,installFTP,installPostGreSQ
 from Utils.utils import generatePassword, createDirectoryWeb, verifyUser, createVirtualHost, restartApache, modifyHosts
 from DB.postgres import  configure_postgresql, configure_pg_hba,  connect_to_db
 from DB.mariadb import install_mariabd, enable_mariadb, secure_mariadb, create_database_and_user, setup_mariadb
-from Controlador.userController import addUserToJson, listUsers, getUserByName,deleteUser, updateUser
+from Controlador.userController import addUserToJson, listUsers, getUserByName,deleteUser, updateUser,addUserToHtpasswd,removeUserFromHtpasswd
 from FTP.ftp import add_ftp_user
 
 class Gui:
@@ -276,6 +276,7 @@ class Gui:
         createDirectoryWeb(name)
         createVirtualHost(name=name, email=email, domain=domain)
         modifyHosts(domain=domain)
+        addUserToHtpasswd(name=name,password=passwd)
         restartApache()
         add_ftp_user(username=name,password=passwd)        
 

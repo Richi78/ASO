@@ -62,6 +62,18 @@ def createVirtualHost(name, email, domain):
         f.write("AllowOverride All\n")
         f.write("Require all granted\n")
         f.write("</Directory>\n")
+        f.write(f"<Directory '/srv/www/htdocs/phpPgAdmin'>\n")
+        f.write("AuthType Basic\n")
+        f.write('AuthName "Authorized only" \n')
+        f.write("AuthUserFile /etc/apache2/.htpasswd\n")
+        f.write("Require valid-user\n")
+        f.write("</Directory>\n")
+        f.write(f"<Directory '/srv/www/htdocs/phpMyAdmin'>\n")
+        f.write("AuthType Basic\n")
+        f.write('AuthName "Authorized only" \n')
+        f.write("AuthUserFile /etc/apache2/.htpasswd\n")
+        f.write("Require valid-user\n")
+        f.write("</Directory>\n")
         f.write("</VirtualHost>\n")
 
     
