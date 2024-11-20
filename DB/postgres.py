@@ -92,7 +92,8 @@ def setup_pg_hba():
             f.writelines(pg_hba)
         
         print("Líneas reemplazadas correctamente en el archivo pg_hba.conf.")
-    
+        subprocess.run(['sudo', 'service', 'postgresql', 'restart'], check=True)
+
     except FileNotFoundError:
         print(f"Archivo no encontrado: {hba_path}")
     except Exception as e:
@@ -144,6 +145,8 @@ def configure_pg_hba(db_name, db_user):
         print("Archivo pg_hba.conf configurado y PostgreSQL reiniciado.")
     except Exception as e:
         print("Error al configurar pg_hba.conf: ", e)
+    subprocess.run(['sudo', 'service', 'postgresql', 'restart'], check=True)
+
 
 def create_home_directory(username):
     # Define the path for the user's home directory
@@ -191,6 +194,8 @@ def delete_postgresql_database_and_user(user):
     except Exception as e:
         print("Error deleting database and user: ", e)
     delete_from_pg_hba(user["name"])
+    subprocess.run(['sudo', 'service', 'postgresql', 'restart'], check=True)
+
 
 
 def delete_from_pg_hba(db_user):
@@ -209,6 +214,8 @@ def delete_from_pg_hba(db_user):
         with open("/var/lib/pgsql/data/pg_hba.conf", "w") as f:
             f.writelines(pg_hba)
         print("Usuario borrado del archivo pg_hba.conf")
+    subprocess.run(['sudo', 'service', 'postgresql', 'restart'], check=True)
+
 
 
 def edit_postgres_password(user, newPassword):
