@@ -89,6 +89,7 @@ def add_ftp_user(username, password):
         ['sudo', 'chown', '-R', f'{username}:users', dirname]
     )
     subprocess.run(['sudo', 'usermod', '-s', '/bin/false', username])
+    subprocess.run(['zypper','vsftpd', 'restart'], check=True)
 
 
 
@@ -105,7 +106,10 @@ def delete_ftp_user(username):
 
     with open('/etc/vsftpd.chroot_list', 'w') as f:
         f.writelines(lines)
+    subprocess.run(['zypper','vsftpd', 'restart'], check=True)
+
 
 
 def edit_ftp_user(username, new_password):
     subprocess.run(['passwd', username], input=f"{new_password}\n{new_password}\n", text=True, check=True)
+    subprocess.run(['zypper','vsftpd', 'restart'], check=True)
