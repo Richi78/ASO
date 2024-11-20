@@ -3,7 +3,7 @@ from datetime import date
 import subprocess
 from Utils.utils import restartApache
 import psycopg2
-from DB.postgres import delete_postgresql_database_and_user,editPassword
+from DB.postgres import delete_postgresql_database_and_user,edit_postgres_password
 from DB.mariadb import delete_mariadb_database_and_user,edit_mariadb_password
 from FTP.ftp import delete_ftp_user,edit_ftp_user
 
@@ -75,7 +75,7 @@ def updateUser(name, email, password, newdomain, quote, path, olddomain,db):
     if  db == "MariaDB":
         edit_mariadb_password(name, password)
     else:
-        editPassword(name, password)
+        edit_postgres_password(name, password)
     
 
     restartApache()

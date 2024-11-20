@@ -15,6 +15,7 @@ __all__ = [
     "delete_postgresql_database_and_user",
     "setup_postresql",
     "setup_pg_hba",
+    "edit_postgres_password"
 ]
 
 
@@ -210,7 +211,8 @@ def delete_from_pg_hba(db_user):
         print("Usuario borrado del archivo pg_hba.conf")
 
 
-def editPassword(user, newPassword):
+def edit_postgres_password(user, newPassword):
+    print(f"Editando la contraseña del usuario '{user}' en PostgreSQL...")
     conn = connect_to_db('postgres', 'postgres', 'postgres')
     cur = conn.cursor()
     cur.execute(sql.SQL("ALTER USER {} WITH PASSWORD '{}';").format(sql.Identifier(user), sql.Identifier(newPassword)))
