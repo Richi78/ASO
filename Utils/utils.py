@@ -23,9 +23,7 @@ def createDirectoryWeb(name):
     subprocess.run(
         ['mkdir', f'/srv/www/htdocs/{dirname}']
     )
-    subprocess.run(
-        ['sudo', 'chown', '-R', f'{name}:users', f'/srv/www/htdocs/{dirname}']
-    )
+    
     subprocess.run(
         ['touch',f'/srv/www/htdocs/{dirname}/index.html']
     )
