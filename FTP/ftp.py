@@ -14,6 +14,7 @@ def conf_ftp():
 
         # Buscar la línea de referencia y realizar los reemplazos
         index_local_enable = -1
+        index_umask = -1
         index_write_enable = -1
         index_chroot_local_user = -1
         index_chroot_list_enable = -1
@@ -23,6 +24,8 @@ def conf_ftp():
         for i in range(len(vsftpd)):
             if "write_enable=NO" in vsftpd[i]:
                 index_write_enable = i
+            if "#umask=022" in vsftpd[i]:
+                index_umask = i
             if "local_enable=NO" in vsftpd[i]:
                 index_local_enable = i
             if "#chroot_local_user=YES" in vsftpd[i]:
@@ -45,6 +48,8 @@ def conf_ftp():
             vsftpd[index_local_enable] = "local_enable=YES\n"
         if index_write_enable != -1:
             vsftpd[index_write_enable] = "write_enable=YES\n"
+        if index_umask != -1:
+            vsftpd[index_umask] = "umask=000\n"
         if index_chroot_local_user != -1:
             vsftpd[index_chroot_local_user] = "chroot_local_user=YES\n"
         if index_chroot_list_enable != -1:
