@@ -213,13 +213,15 @@ def delete_from_pg_hba(db_user):
 
 def edit_postgres_password(user, newPassword):
     print(f"Editando la contraseña del usuario '{user}' en PostgreSQL... y contrasenia: {newPassword}")
+    subprocess.run(['sudo', 'service', 'postgresql', 'start'], check=True)
+    
     try:
         # Conectar a PostgreSQL como el usuario postgres
         conn = psycopg2.connect(dbname="postgres", user="postgres",password="postgres")
         conn.autocommit = True
         cur = conn.cursor()
         # Editar la contrase{\na del usuario
-        cur.execute(sql.SQL("ALTER USER {} WITH PASSWORD '{}';").format(sql.Identifier(user), sql.Literal(newPassword)))
+        cur.execute(sql.SQL("ALTER USER {} WITH PASSWORD {};").format(sql.Identifier(user), sql.Literal(newPassword)))
         print("Password changed successfully.")
         # Cerrar conexión
         cur.close()
